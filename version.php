@@ -17,7 +17,7 @@
 
 
 /**
- * Defines the version of newmodule
+ * Defines the version of hotquestion
  *
  * This code fragment is called by moodle_needs_upgrading() and
  * /admin/index.php
