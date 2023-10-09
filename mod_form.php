@@ -311,7 +311,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         $completionpostel = 'completionpost' . $suffix;
 
         $completionvoteenabled = 'completionvoteenabled'.$suffix;
-        $completionvoteel = 'completionvoteel' . $suffix;
+        $completionvoteel = 'completionvote'.$suffix;
 
         return (!empty($data['completionpostenabled']) && $data['completionpost'] != 0) ||
             (!empty($data['completionvoteenabled']) && $data['completionvote'] != 0);
