@@ -27,7 +27,7 @@
  */
 use mod_hotquestion\local\results;
 use mod_hotquestion\local\hqavailable;
-use \mod_hotquestion\event\course_module_viewed;
+use mod_hotquestion\event\course_module_viewed;
 
 require_once("../../config.php");
 require_once("lib.php");
@@ -46,7 +46,7 @@ if (! $cm = get_coursemodule_from_id('hotquestion', $id)) {
     throw new moodle_exception(get_string('incorrectmodule', 'hotquestion'));
 }
 
-$course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 
 // Construct hotquestion instance.
 $hq = new mod_hotquestion($id, $roundid);
@@ -63,11 +63,11 @@ if (!$entriesmanager && !$canask) {
     throw new moodle_exception(get_string('accessdenied', 'hotquestion'));
 }
 
-if (! $hotquestion = $DB->get_record("hotquestion", array("id" => $cm->instance))) {
+if (! $hotquestion = $DB->get_record("hotquestion", ["id" => $cm->instance])) {
     throw new moodle_exception(get_string('incorrectmodule', 'hotquestion'));
 }
 
-if (! $cw = $DB->get_record("course_sections", array("id" => $cm->section))) {
+if (! $cw = $DB->get_record("course_sections", ["id" => $cm->section])) {
     throw new moodle_exception(get_string('incorrectmodule', 'hotquestion'));
 }
 
@@ -84,7 +84,11 @@ if (!($oldvispreference)) {
 }
 
 // Trigger module viewed event.
-$params = array('objectid' => $hq->cm->id, 'context' => $context);
+$params = [
+    'objectid' => $hq->cm->id,
+    'context' => $context,
+];
+
 $event = course_module_viewed::create($params);
 $event->trigger();
 
@@ -94,7 +98,7 @@ $completion->set_module_viewed($cm);
 
 // Set page.
 if (!$ajax) {
-    $PAGE->set_url('/mod/hotquestion/view.php', array('id' => $hq->cm->id));
+    $PAGE->set_url('/mod/hotquestion/view.php', ['id' => $hq->cm->id]);
     $PAGE->set_title($hq->instance->name);
     $PAGE->set_heading($hq->course->shortname);
     $PAGE->set_context($context);
@@ -110,7 +114,7 @@ $output->init($hq);
 
 // 20230522 Changed to $canask. Process submitted question.
 if ($canask) {
-    $mform = new hotquestion_form(null, array($hq->instance->anonymouspost, $hq->cm));
+    $mform = new hotquestion_form(null, [$hq->instance->anonymouspost, $hq->cm]);
     // 20230520 Needed isset so changing unapproved question views do not cause an error.
     if (($fromform = $mform->get_data()) && (isset($fromform->submitbutton))) {
         // If there is a post, $fromform will contain text, format, id, and submitbutton.
@@ -224,7 +228,7 @@ if (!empty($action)) {
 // Start print page.
 if (!$ajax) {
     // Added code to include the activity name, 10/05/16.
-    $hotquestionname = format_string($hotquestion->name, true, array('context' => $context));
+    $hotquestionname = format_string($hotquestion->name, true, ['context' => $context]);
     echo $output->header();
     // 20220716 HQ_882 Skip heading for Moodle 4.0 and higher as it seems to be automatic.
     if ($CFG->branch < 400) {
@@ -292,9 +296,11 @@ if (!$ajax) {
     echo '<td><form method="post">';
 
     // Add a selector for unapproved question visibility preference.
-    $listoptions = array(get_string('unapprovedquestionnotset', 'hotquestion'),
-                         get_string('unapprovedquestionsee', 'hotquestion'),
-                         get_string('unapprovedquestionhide', 'hotquestion'));
+    $listoptions = [
+        get_string('unapprovedquestionnotset', 'hotquestion'),
+        get_string('unapprovedquestionsee', 'hotquestion'),
+        get_string('unapprovedquestionhide', 'hotquestion'),
+    ];
     $htmlout = '';
     $htmlout .= '   '.get_string('unapprovedquestionvisibility', 'hotquestion')
                      .' <select onchange="this.form.submit()" id="pref_visibility" name="vispreference">';
@@ -345,7 +351,7 @@ echo $output->current_user_rating(has_capability('mod/hotquestion:ask', $context
 // 20220629 The raw rating and button are visible only if grading is setup.
 if (($entriesmanager || $canask) && ($hotquestion->grade <> 0)) {
     echo ' ';
-    $url = new moodle_url('grades.php', array('id' => $cm->id, 'group' => $group));
+    $url = new moodle_url('grades.php', ['id' => $cm->id, 'group' => $group]);
     echo $output->single_button($url, get_string('viewgrades', 'hotquestion'));
 }
 // End contrib by ecastro ULPGC.

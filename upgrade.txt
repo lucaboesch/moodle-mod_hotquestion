@@ -9,6 +9,14 @@ This files describes changes in the Hot Question code.
 20220821 HotQuestion_911 - Need to see about including grades in the Export tool.
 20230120 HotQuestion_995 - The grade table needs more info included in the download. 
 
+=== 4.1.8 === 2023100900
+20230926 HotQuestion_1076 - Need to implement suffix on mod_for.php for Moodle 4.3.
+    Added needed code to the mod_form.php file for both add_completion_rules and for
+    completion_rule_enabled.
+20231008 HotQuestion_1091 - Latest codechecker says "Import statements must not begin
+    with a leading backslash".
+20231008 HotQuestion_1092 - Latest codechecker requires convert from long array(),
+    to short array [].
 
 === 4.1.7 === 2023052500 Only for M3.11 and above.
 === 4.1.7+ ===

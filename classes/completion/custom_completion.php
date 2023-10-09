@@ -72,7 +72,7 @@ class custom_completion extends activity_custom_completion {
 
         } else if ($rule == 'completionvote') {
             $status = $hotquestion->completionvote <=
-                $DB->get_field_sql($questionvotesql , $questionvoteparams);
+                $DB->get_field_sql($questionvotesql, $questionvoteparams);
         } else if ($rule == 'completionpass') {
             $status = $hotquestion->completionpass <=
                 $DB->get_field_sql($questioncountsql.

@@ -56,7 +56,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox_with_advanced('mod_hotquestion/teacherpriorityvisibility',
         get_string('teacherpriorityvisibility', 'hotquestion'),
         get_string('teacherpriorityvisibility_descr', 'hotquestion'),
-        array('value' => 1, 'adv' => false)));
+        ['value' => 1, 'adv' => false]));
 
     // Default heading prioritylabel setting.
     $settings->add(new admin_setting_configtext('mod_hotquestion/teacherprioritylabel',
@@ -68,7 +68,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox_with_advanced('mod_hotquestion/heatvisibility',
         get_string('heatvisibility', 'hotquestion'),
         get_string('heatvisibility_descr', 'hotquestion'),
-        array('value' => 1, 'adv' => false)));
+        ['value' => 1, 'adv' => false]));
 
     // Default heading heatlabel setting.
     $settings->add(new admin_setting_configtext('mod_hotquestion/heatlabel',
@@ -77,7 +77,7 @@ if ($ADMIN->fulltree) {
         'Heat', PARAM_TEXT, 20));
 
     // Default heading heatlimit setting.
-    $tl = array();
+    $tl = [];
     for ($i = 0; $i <= 10; $i++) {
         $tl[] = $i;
     }
@@ -88,13 +88,13 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox_with_advanced('mod_hotquestion/anonymouspost',
         get_string('allowanonymouspost', 'hotquestion'),
         get_string('allowanonymouspost_descr', 'hotquestion'),
-        array('value' => 0, 'adv' => false)));
+        ['value' => 0, 'adv' => false]));
 
     // Default allow hide author info from students.
     $settings->add(new admin_setting_configcheckbox_with_advanced('mod_hotquestion/allowauthorinfohide',
         get_string('allowauthorinfohide', 'hotquestion'),
         get_string('allowauthorinfohide_descr', 'hotquestion'),
-        array('value' => 0, 'adv' => false)));
+        ['value' => 0, 'adv' => false]));
 
     // Default heading removelabel setting.
     $settings->add(new admin_setting_configtext('mod_hotquestion/removelabel',
@@ -106,7 +106,7 @@ if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_configcheckbox_with_advanced('mod_hotquestion/requireapproval',
         get_string('requireapproval', 'hotquestion'),
         get_string('requireapproval_descr', 'hotquestion'),
-        array('value' => 0, 'adv' => false)));
+        ['value' => 0, 'adv' => false]));
 
     // Default heading approvallabel setting.
     $settings->add(new admin_setting_configtext('mod_hotquestion/approvallabel',

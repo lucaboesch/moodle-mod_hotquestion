@@ -118,7 +118,7 @@ class provider implements \core_privacy\local\metadata\provider,
             'modid' => $modid,
             'contextlevel' => CONTEXT_MODULE,
             'userid1' => $userid,
-            'userid2' => $userid
+            'userid2' => $userid,
         ];
 
         // User-created hotquestion entries.
@@ -280,7 +280,7 @@ class provider implements \core_privacy\local\metadata\provider,
                 'time' => transform::datetime($question->time),
                 'anonymous' => transform::yesno($question->anonymous),
                 'approved' => transform::yesno($question->approved),
-                'tpriority' => $question->tpriority
+                'tpriority' => $question->tpriority,
             ];
         }
         $questions->close();
