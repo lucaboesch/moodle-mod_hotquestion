@@ -267,9 +267,10 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         } else {
             $suffix = $this->get_suffix();
         }
-        $completionpostgroup = 'completionpostgroup' . $suffix;
-        $completionpostenabled = 'completionpostenabled' . $suffix;
-        $completionpostel = 'completionpost' . $suffix;
+
+        $completionpostgroup = 'completionpostgroup'.$suffix;
+        $completionpostenabled = 'completionpostenabled'.$suffix;
+        $completionpostel = 'completionpost'.$suffix;
         $group = [];
         $group[] = $mform->createElement('checkbox', $completionpostenabled, '', get_string('completionpost', 'hotquestion'));
         $group[] = $mform->createElement('text', $completionpostel, '', ['size' => 3]);
@@ -277,45 +278,15 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         $mform->addGroup($group, $completionpostgroup, get_string('completionpostgroup', 'hotquestion'), [' '], false);
         $mform->disabledIf($completionpostel, $completionpostenabled, 'notchecked');
 
-        // @codingStandardsIgnoreLine
-        /*
-        $group = [];
-        $group[] = $mform->createElement('checkbox', 'completionpostenabled', '', get_string('completionpost', 'hotquestion'));
-        $group[] = $mform->createElement('text', 'completionpost', '', ['size' => 3]);
-        $mform->setType('completionpost', PARAM_INT);
-        $mform->addGroup($group, 'completionpostgroup', get_string('completionpostgroup', 'hotquestion'), [' '], false);
-        $mform->disabledIf('completionpost', 'completionpostenabled', 'notchecked');
-        */
-
-        // Duplicte if and is not needed.
-        // 20230926 Changed code for Moodle 4.3.
-        // @codingStandardsIgnoreLine
-        /*
-        if ($CFG->branch < 403) {
-            $suffix = '';
-        } else {
-            $suffix = $this->get_suffix();
-        }
-        */
-        $completionvotegroup = 'completionvotegroup' . $suffix;
-        $completionvoteenabled = 'completionvoteenabled' . $suffix;
-        $completionvoteel = 'completionvoteel' . $suffix;
+        $completionvotegroup = 'completionvotegroup'.$suffix;
+        $completionvoteenabled = 'completionvoteenabled'.$suffix;
+        $completionvoteel = 'completionvote'.$suffix;
         $group = [];
         $group[] = $mform->createElement('checkbox', $completionvoteenabled, '', get_string('completionvote', 'hotquestion'));
         $group[] = $mform->createElement('text', $completionvoteel, '', ['size' => 3]);
         $mform->setType($completionvoteel, PARAM_INT);
         $mform->addGroup($group, $completionvotegroup, get_string('completionvotegroup', 'hotquestion'), [' '], false);
         $mform->disabledIf($completionvoteel, $completionvoteenabled, 'notchecked');
-
-        // @codingStandardsIgnoreLine
-        /*
-        $group = [];
-        $group[] = $mform->createElement('checkbox', 'completionvoteenabled', '', get_string('completionvote', 'hotquestion'));
-        $group[] = $mform->createElement('text', 'completionvote', '', ['size' => 3]);
-        $mform->setType('completionvote', PARAM_INT);
-        $mform->addGroup($group, 'completionvotegroup', get_string('completionvotegroup', 'hotquestion'), [' '], false);
-        $mform->disabledIf('completionvote', 'completionvoteenabled', 'notchecked');
-        */
 
         return [$completionpostgroup, $completionvotegroup];
     }
@@ -335,26 +306,15 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         } else {
             $suffix = $this->get_suffix();
         }
-        $completionpostenabled = 'completionpostenabled' . $suffix;
+
+        $completionpostenabled = 'completionpostenabled'.$suffix;
         $completionpostel = 'completionpost' . $suffix;
 
-        // 20230926 Changed code for Moodle 4.3.
-        if ($CFG->branch < 403) {
-            $suffix = '';
-        } else {
-            $suffix = $this->get_suffix();
-        }
-        $completionvoteenabled = 'completionvoteenabled' . $suffix;
+        $completionvoteenabled = 'completionvoteenabled'.$suffix;
         $completionvoteel = 'completionvoteel' . $suffix;
 
-        return (!empty($data[$completionpostenabled]) && $data[$completionpostel] != 0)
-            || (!empty($data[$completionvoteenabled]) && $data[$completionvoteel] != 0);
-
-        // @codingStandardsIgnoreLine
-        /*
         return (!empty($data['completionpostenabled']) && $data['completionpost'] != 0) ||
             (!empty($data['completionvoteenabled']) && $data['completionvote'] != 0);
-        */
     }
 
     /**
