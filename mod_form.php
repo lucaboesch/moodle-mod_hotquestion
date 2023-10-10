@@ -271,6 +271,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         $completionpostgroup = 'completionpostgroup'.$suffix;
         $completionpostenabled = 'completionpostenabled'.$suffix;
         $completionpostel = 'completionpost'.$suffix;
+
         $group = [];
         $group[] = $mform->createElement('checkbox', $completionpostenabled, '', get_string('completionpost', 'hotquestion'));
         $group[] = $mform->createElement('text', $completionpostel, '', ['size' => 3]);
@@ -281,6 +282,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         $completionvotegroup = 'completionvotegroup'.$suffix;
         $completionvoteenabled = 'completionvoteenabled'.$suffix;
         $completionvoteel = 'completionvote'.$suffix;
+
         $group = [];
         $group[] = $mform->createElement('checkbox', $completionvoteenabled, '', get_string('completionvote', 'hotquestion'));
         $group[] = $mform->createElement('text', $completionvoteel, '', ['size' => 3]);

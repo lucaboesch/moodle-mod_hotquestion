@@ -9,7 +9,7 @@ This files describes changes in the Hot Question code.
 20220821 HotQuestion_911 - Need to see about including grades in the Export tool.
 20230120 HotQuestion_995 - The grade table needs more info included in the download. 
 
-=== 4.1.8 === 2023100900
+=== 4.1.8 === 2023101000
 20230926 HotQuestion_1076 - Need to implement suffix on mod_for.php for Moodle 4.3.
     Added needed code to the mod_form.php file for both add_completion_rules and for
     completion_rule_enabled.
@@ -17,6 +17,9 @@ This files describes changes in the Hot Question code.
     with a leading backslash".
 20231008 HotQuestion_1092 - Latest codechecker requires convert from long array(),
     to short array [].
+20231010 HotQuestion_1094 - Using v4.1.8 on IONOS moodle311 test site students cannout
+    vote/unvote. Did find in grades.php line 42 the closing bracket was missing.
+    Wound up replaceing the two HQ activities and HQ works as expected. 
 
 === 4.1.7 === 2023052500 Only for M3.11 and above.
 === 4.1.7+ ===
