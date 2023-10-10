@@ -39,7 +39,7 @@ if (! $cm = get_coursemodule_from_id('hotquestion', $id)) {
     throw new moodle_exception(get_string('incorrectmodule', 'hotquestion'));
 }
 
-$course = $DB->get_record('course', ['id' => $cm->course, '*', MUST_EXIST);
+$course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 
 
 // Construct hotquestion instance.
