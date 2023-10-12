@@ -57,17 +57,18 @@ require_login($hq->course, true, $hq->cm);
 $context = context_module::instance($hq->cm->id);
 
 $entriesmanager = has_capability('mod/hotquestion:manageentries', $context);
+$canrate = has_capability('mod/hotquestion:rate', $context);
 $canask = has_capability('mod/hotquestion:ask', $context);
 
-if (!$entriesmanager && !$canask) {
+if (!$entriesmanager && !$canrate && !$canask) {
     throw new moodle_exception(get_string('accessdenied', 'hotquestion'));
 }
 
-if (! $hotquestion = $DB->get_record("hotquestion", ["id" => $cm->instance])) {
+if (!$hotquestion = $DB->get_record("hotquestion", ["id" => $cm->instance])) {
     throw new moodle_exception(get_string('incorrectmodule', 'hotquestion'));
 }
 
-if (! $cw = $DB->get_record("course_sections", ["id" => $cm->section])) {
+if (!$cw = $DB->get_record("course_sections", ["id" => $cm->section])) {
     throw new moodle_exception(get_string('incorrectmodule', 'hotquestion'));
 }
 
@@ -164,8 +165,9 @@ if (!empty($action)) {
         case 'vote':
             if (has_capability('mod/hotquestion:vote', $context)) {
                 // 20230122 Prevent voting when closed.
-                if ((hqavailable::is_hotquestion_ended($hq) && !$hotquestion->viewaftertimeclose) ||
-                    (has_capability('mod/hotquestion:manageentries', $context))) {
+                if ((hqavailable::is_hotquestion_ended($hq) && !$hotquestion->viewaftertimeclose)
+                    || (has_capability('mod/hotquestion:rate', $context))
+                    ) {
                     $q = required_param('q',  PARAM_INT);  // Question id to vote.
                     $hq->vote_on($q);
                     redirect('view.php?id='.$hq->cm->id, null); // Needed to prevent heat toggle on page reload.
@@ -215,7 +217,7 @@ if (!empty($action)) {
             }
             break;
         case 'approve':
-            if (has_capability('mod/hotquestion:manageentries', $context)) {
+            if (has_capability('mod/hotquestion:manageentries', $context) || has_capability('mod/hotquestion:rate', $context)) {
                 $q = required_param('q',  PARAM_INT);  // Question id to approve.
                 // Call approve question function in locallib.
                 $hq->approve_question($q);
@@ -237,9 +239,12 @@ if (!$ajax) {
 
     // Allow access at any time to manager and editing teacher but prevent access to students.
     // Check availability timeopen and timeclose. Added 10/2/16. Modified 20230120 to add viewaftertimeclose.
-    // Modified 20230125 to create hqavailable class.
-    if (!(has_capability('mod/hotquestion:manage', $context)) &&
-        !hqavailable::is_hotquestion_active($hq)) {  // Availability restrictions.
+    // Modified 20230125 to create hqavailable class. This controls availability restrictions.
+    if (!(has_capability('mod/hotquestion:manage', $context)
+        || has_capability('mod/hotquestion:rate', $context))
+        && !hqavailable::is_hotquestion_active($hq)
+        ) {  // Availability restrictions.
+
         $inaccessible = '';
         if (hqavailable::is_hotquestion_ended($hq) && !$hotquestion->viewaftertimeclose) {
             $inaccessible = $output->hotquestion_inaccessible(get_string('hotquestionclosed',
@@ -334,9 +339,11 @@ if (!$ajax) {
     echo '</td></tr></table>';
 
     // Print the textarea box for typing submissions in.
-    if (has_capability('mod/hotquestion:manage', $context) ||
-        (has_capability('mod/hotquestion:ask', $context) &&
-        hqavailable::is_hotquestion_active($hq))) {
+    if ((has_capability('mod/hotquestion:manage', $context)
+        || has_capability('mod/hotquestion:rate', $context))
+        || (has_capability('mod/hotquestion:ask', $context)
+           && hqavailable::is_hotquestion_active($hq))
+        ) {
         $mform->display();
     }
 }
@@ -349,7 +356,7 @@ echo $output->current_user_rating(has_capability('mod/hotquestion:ask', $context
 
 // 20220515 Enabled the view grade button for both managers and students. Student ONLY see their grade.
 // 20220629 The raw rating and button are visible only if grading is setup.
-if (($entriesmanager || $canask) && ($hotquestion->grade <> 0)) {
+if (($entriesmanager || $canrate || $canask) && ($hotquestion->grade <> 0)) {
     echo ' ';
     $url = new moodle_url('grades.php', ['id' => $cm->id, 'group' => $group]);
     echo $output->single_button($url, get_string('viewgrades', 'hotquestion'));
