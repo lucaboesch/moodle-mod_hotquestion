@@ -362,7 +362,8 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
                         (($question->approved)
                             && (get_user_preferences('hotquestion_seeunapproved'.$question->hotquestion) == 2))
                         // OR User is a manager and user preference is set to see unapproved questions.
-                        || ((has_capability('mod/hotquestion:manageentries', $context))
+                        || ((has_capability('mod/hotquestion:manageentries', $context)
+                            || has_capability('mod/hotquestion:rate', $context))
                             && (get_user_preferences('hotquestion_seeunapproved'.$question->hotquestion) == 1))
                         // OR Question is approved and user is NOT a manager and user preference is set to see unapproved questions.
                         || (($question->approved)
@@ -499,7 +500,8 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
                             $rtemp = $this->pix_url('t/delete');
                         }
                         // Print the remove and approve case option for teacher and manager.
-                        if (has_capability('mod/hotquestion:manageentries', $context)) {
+                        if (has_capability('mod/hotquestion:manageentries', $context)
+                            || has_capability('mod/hotquestion:rate', $context)) {
                             // Process remove column.
                             // Added delete confirm 2/8/19.
                             $remove .= '&nbsp;<a onclick="return confirm(\''
