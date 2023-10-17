@@ -60,7 +60,7 @@ $PAGE->set_context($context);
 $PAGE->set_cm($hq->cm);
 $PAGE->add_body_class('hotquestion');
 
-if ($entriesmanager = has_capability('mod/hotquestion:manageentries', $context)) {
+if ($entriesmanager = has_capability('mod/hotquestion:rate', $context)) {
     $userid = 0;
 } else {
     $userid = $USER->id;
