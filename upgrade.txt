@@ -8,12 +8,14 @@ This files describes changes in the Hot Question code.
     Activity completion should reflect that. See the ticket for details.
 20220821 HotQuestion_911 - Need to see about including grades in the Export tool.
 20230120 HotQuestion_995 - The grade table needs more info included in the download. 
-20230601 HotQuestion_1051 - $hotquestion->viewaftertimeclose in view.php at line 167
-    does not appear to work correctly.
+    Some items (3) have been done. Still have others (3) to do.
 
 
 
 === 4.1.8 === 2023101200
+20230601 HotQuestion_1051 - $hotquestion->viewaftertimeclose in view.php at line 167
+    does not appear to work correctly. Made code changes to the mod_form.php plus
+    made some other changes in view.php and renderer.php.
 20230926 HotQuestion_1076 - Need to implement suffix on mod_for.php for Moodle 4.3.
     Added needed code to the mod_form.php file for both add_completion_rules and for
     completion_rule_enabled. Made code changes as needed. See ticket for details.
