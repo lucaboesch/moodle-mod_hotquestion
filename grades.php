@@ -41,7 +41,6 @@ if (! $cm = get_coursemodule_from_id('hotquestion', $id)) {
 
 $course = $DB->get_record('course', ['id' => $cm->course], '*', MUST_EXIST);
 
-
 // Construct hotquestion instance.
 $hq = new mod_hotquestion($id);
 
