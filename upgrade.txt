@@ -12,7 +12,7 @@ This files describes changes in the Hot Question code.
 
 
 
-=== 4.1.8 === 2023101200
+=== 4.1.8 === 2023101700
 20230601 HotQuestion_1051 - $hotquestion->viewaftertimeclose in view.php at line 167
     does not appear to work correctly. Made code changes to the mod_form.php plus
     made some other changes in view.php and renderer.php.
