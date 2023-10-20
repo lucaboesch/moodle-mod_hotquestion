@@ -165,8 +165,10 @@ if (!empty($action)) {
         case 'vote':
             if (has_capability('mod/hotquestion:vote', $context)) {
                 // 20230122 Prevent voting when closed.
-                if ((hqavailable::is_hotquestion_ended($hq) && !$hotquestion->viewaftertimeclose)
+                if ((hqavailable::is_hotquestion_active($hq))
                     || (has_capability('mod/hotquestion:rate', $context))
+                    || ((!hqavailable::is_hotquestion_active($hq))
+                        && !$hotquestion->viewaftertimeclose)
                     ) {
                     $q = required_param('q',  PARAM_INT);  // Question id to vote.
                     $hq->vote_on($q);
@@ -176,8 +178,11 @@ if (!empty($action)) {
         case 'removevote':
             if (has_capability('mod/hotquestion:vote', $context)) {
                 // 20230122 Prevent vote remove when closed.
-                if ((hqavailable::is_hotquestion_ended($hq) && !$hotquestion->viewaftertimeclose) ||
-                    (has_capability('mod/hotquestion:rate', $context))) {
+                if ((hqavailable::is_hotquestion_active($hq))
+                    || (has_capability('mod/hotquestion:rate', $context))
+                    || ((!hqavailable::is_hotquestion_active($hq))
+                        && !$hotquestion->viewaftertimeclose)
+                    ) {
                     $q = required_param('q',  PARAM_INT);  // Question id to vote.
                     $hq->remove_vote($q);
                 }
