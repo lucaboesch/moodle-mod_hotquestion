@@ -11,6 +11,11 @@ This files describes changes in the Hot Question code.
     Some items (3) have been done. Still have others (3) to do.
 
 
+=== 4.1.8+=== 2023101702 released 20231025
+20231025 HotQuestion_1104 - Error when deleting data for user Issue #86 at github.
+    Changed provider.php lines 366 and 408 to use voter instead of userid. Also to
+    use id instead of itemid in line 408.
+
 
 === 4.1.8+=== 2023101701 released 20231021
 20230601 HotQuestion_1051 - $hotquestion->viewaftertimeclose in view.php at line 167
