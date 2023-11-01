@@ -14,6 +14,12 @@ This files describes changes in the Hot Question code.
 20231027 HotQuestion_1105 - When, Questions for max grading, is not one or more,
     you get a non-fatal divide by zero error. Changed code in line 843 of lib.php file
     to frevent $factor from being zero.
+20231101 HotQuestion_1110 - Can not select just "Student must add question" as the
+    criteria for Completion Tracking #87. Changed default settings from 1 to 0, for,
+    $defaultvalues['completionpost'] = 0; and for $defaultvalues['completionvote'] = 0;
+    in the mod_form.php file.
+
+
 
 === 4.1.8.02+ === 2023101702 released 2023102500
 20231025 HotQuestion_1104v - Error when deleting data for user Issue #86 at github.
