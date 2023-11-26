@@ -18,6 +18,10 @@ This files describes changes in the Hot Question code.
     criteria for Completion Tracking #87. Changed default settings from 1 to 0, for,
     $defaultvalues['completionpost'] = 0; and for $defaultvalues['completionvote'] = 0;
     in the mod_form.php file.
+20231122 HotQuestion_1120 - Users unable to view hot questions when course is in
+    Read-Only mode #88. Made changes to view.php where I added a new line 62 and
+    then modified line 64, which added a new view capability. Picture is in
+    FAQ>HotQuestion>CourseReadOnlyContext.
 20231123 HotQuestion_1121 - Vote and unvote actions undo / toggle on page reload #89.
     Made changes in locallib.php. See the ticket for details.
 
