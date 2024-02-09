@@ -294,20 +294,15 @@ if (!$ajax) {
 
     // 20230522 Added a single row table to make both group and viewunapproved preference drop down menus work.
     echo '<table style="width:100%"><tr><td style="width:25%>';
-
     // Print group information (A drop down box will be displayed if the user
     // is a member of more than one group, or has access to all groups).
     echo groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/hotquestion/view.php?id='.$cm->id);
-
     echo '</td>';
-
-
 
     // 20240209 I approval is not required, do not show the visibility preference slector.
     if ($hotquestion->approval == 1) {
         // 20230519 Added for preference selector.
         echo '<td style="width:50%"><form method="post">';
-
         // Add a selector for unapproved question visibility preference.
         $listoptions = [
             get_string('unapprovedquestionnotset', 'hotquestion'),
@@ -333,27 +328,18 @@ if (!$ajax) {
         set_user_preference('hotquestion_seeunapproved'.$hotquestion->id, $vispreference);
         // 20240209 Added visibility preference check here. Might want to try it at line 306 and save some work.
         echo $htmlout;
-
         // 20230522 Limit the form to this one row/cell of the table.
         echo '</form></td>';
-
     } else {
         echo '<td>&nbsp; &nbsp; &nbsp;</td>';
     }
-
     // 20230519 This creates the URL link button for all HotQuestions in this course.
-    //echo '<td>';
     $url2 = '<a href="'.$CFG->wwwroot.'/mod/hotquestion/index.php?id='.$course->id
         .'"class="btn btn-link">'
         .get_string('viewallhotquestions', 'hotquestion', $hotquestion->name)
         .'</a>';
-    //echo '<span style="float: inline-end">'.$url2.'</span><br>';
-    //echo '<span style="text-align:right">'.$url2.'</span><br>';
-    //echo '<td style="width:25%"><span style="text-align:right">'.$url2.'</span>';
     echo '<td style="width:25%; text-align:right">'.$url2.'</td>';
-
     echo '</tr></table>';
-
     // Print the textarea box for typing submissions in.
     if ((has_capability('mod/hotquestion:manage', $context)
         || has_capability('mod/hotquestion:rate', $context))
