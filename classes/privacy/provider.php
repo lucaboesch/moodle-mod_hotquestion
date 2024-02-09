@@ -82,14 +82,6 @@ class provider implements \core_privacy\local\metadata\provider,
             ],
             'privacy:metadata:hotquestion_votes'
         );
-        $collection->add_database_table(
-            'hotquestion_grades',
-            [
-                'userid' => 'privacy:metadata:hotquestion_grades:userid',
-                'rawrating' => 'privacy:metadata:hotquestion_grades:rawrating',
-            ],
-            'privacy:metadata:hotquestion_grades'
-        );
         return $collection;
     }
 
