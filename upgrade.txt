@@ -13,7 +13,7 @@ This files describes changes in the Hot Question code.
     text #61. 20231201 Started investigating how to do this.
 
 
-=== 4.2.0 === pending
+=== 4.2.0 === 20240209 released 20240210
 20240109 HotQuestion_1162bt - Hot Question - Missing privacy metadata for
     mdl_hotquestion_grades table github issue #92. Reviewed and approved
     pull request on github. Added three strings and added hotquestion_grades
