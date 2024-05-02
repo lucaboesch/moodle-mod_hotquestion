@@ -44,7 +44,11 @@ Feature: When posting a question while viewing a closed round, the question post
     And I should see "Round 1 first question by student 1"
     And I follow "Open a new round"
 	# Teacher verfies new round is logged.
-    And I navigate to "Logs" in current page administration
+    And I am on "Course 1" course homepage
+    When I navigate to "Reports" in current page administration
+    And I click on "Logs" "link"
+    And I set the field "menumodid" to "Test hotquestion name"
+    And I press "Get these logs"
     Then I should see "Teacher 1" in the "#report_log_r1_c1" "css_element"
     And I should see "Opened a new round" in the "#report_log_r1_c5" "css_element"
     Then I log out

@@ -81,7 +81,11 @@ Feature: Teachers, admin and managers can remove named or anonymous posts
     And I click on "Remove" "link" in the "Seventh question by student 1" "table_row"
     Then I should not see "Seventh question by student 1"
 	# Teacher 1 verifies removing post and votes is logged.
-    And I navigate to "Logs" in current page administration
+    And I am on "Course 1" course homepage
+    When I navigate to "Reports" in current page administration
+    And I click on "Logs" "link"
+    And I set the field "menumodid" to "Test hotquestion name"
+    And I press "Get these logs"
     Then I should see "Teacher 1" in the "#report_log_r1_c1" "css_element"
     And I should see "Remove question" in the "#report_log_r1_c5" "css_element"
     Then I log out
@@ -92,7 +96,11 @@ Feature: Teachers, admin and managers can remove named or anonymous posts
     And I click on "Remove" "link" in the "Eighth question by student 1" "table_row"
     Then I should not see "Eighth question by student 1"
 	# Admin User verifies removing post and votes is logged.
-    And I navigate to "Logs" in current page administration
+    And I am on "Course 1" course homepage
+    When I navigate to "Reports" in current page administration
+    And I click on "Logs" "link"
+    And I set the field "menumodid" to "Test hotquestion name"
+    And I press "Get these logs"
     Then I should see "Admin User" in the "#report_log_r1_c1" "css_element"
     And I should see "Remove question" in the "#report_log_r1_c5" "css_element"
     Then I log out
@@ -103,7 +111,11 @@ Feature: Teachers, admin and managers can remove named or anonymous posts
     And I click on "Remove" "link" in the "First question by teacher 1" "table_row"
     Then I should not see "First question by teacher 1"
 	# Manager 1 verifies removing post and votes is logged.
-    And I navigate to "Logs" in current page administration
+    And I am on "Course 1" course homepage
+    When I navigate to "Reports" in current page administration
+    And I click on "Logs" "link"
+    And I set the field "menumodid" to "Test hotquestion name"
+    And I press "Get these logs"
     Then I should see "Manager 1" in the "#report_log_r1_c1" "css_element"
     And I should see "Remove question" in the "#report_log_r1_c5" "css_element"
     Then I log out
