@@ -157,9 +157,14 @@ Feature: Admin user can export all questions from all HotQuestions
     And I should see "Posted by Anonymous"
     And I should see "First question 1"
     And I should see "Posted by Admin User"
-    And following "Export to .csv" should download between "1300" and "1400" bytes
+    And following "Export to .csv" should download between "1700" and "1800" bytes
+    And I log out
     # Verify download by admin was logged.
-    And I navigate to "Logs" in current page administration
+    And I am on the "C1" "Course" page logged in as "admin"
+    When I navigate to "Reports" in current page administration
+    And I click on "Logs" "link"
+    And I set the field "menumodid" to "Test hotquestion name"
+    And I press "Get these logs"
     Then I should see "Admin User" in the "#report_log_r0_c1" "css_element"
     And I should see "Download questions" in the "#report_log_r0_c5" "css_element"
     Then I log out

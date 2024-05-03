@@ -911,7 +911,7 @@ function hotquestion_rescale_activity_grades(stdClass $course, stdClass $cm, flo
  *
  * @param stdClass $hotquestion stdClass.
  */
-function hotquestion_check_ratings_recalculation(stdClass $hotquestion) : bool {
+function hotquestion_check_ratings_recalculation(stdClass $hotquestion): bool {
     global $CFG, $DB;
 
     require_once($CFG->dirroot.'/mod/hotquestion/locallib.php');
