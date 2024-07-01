@@ -88,7 +88,6 @@ class custom_completion extends activity_custom_completion {
         } else if ($rule == 'completionpass') {
             if ($status = $hotquestion->completionpass <=
                 $DB->get_field_sql($questioncountsql.
-                    //' AND hqg.userid = $userid AND hqg.rawrating >= hqqcompletionpass',
                     ' AND hqg.userid = $userid AND hqg.rawrating >= hqgrade',
                     $questioncountparams)) {
                 $status = $hotquestion->completionpass = 1;
