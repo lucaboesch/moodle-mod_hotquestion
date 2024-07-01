@@ -13,18 +13,19 @@ This files describes changes in the Hot Question code.
     text #61. 20231201 Started investigating how to do this.
 
 
+=== 4.2.1 === 20240701 pending
+20240625 HotQuestion - Hot Question Activity Completion possible bug #97. Made a lot
+    of changes to the completion code. See ticket for details.
+
 === 4.2.0 === 20240209 released 20240210
-20240109 HotQuestion_1162bt - Hot Question - Missing privacy metadata for
+20240109 HotQuestion_1162v - Hot Question - Missing privacy metadata for
     mdl_hotquestion_grades table github issue #92. Reviewed and approved
     pull request on github. Added three strings and added hotquestion_grades
     to privacy metadata.
-20240209 HotQuestion_1204bt - HotQuestion - Feature request - Hide the visibility
-    preference when Approval Required is set to No.Adding an if check on $hotquestion->
+20240209 HotQuestion_1204v - HotQuestion - Feature request - Hide the visibility
+    preference when Approval Required is set to No. Adding an if check on $hotquestion->
     approval to control whether or not the visibility selector is shown. If approval
     is not required, the the selector is hidden.
-
-
-
 
 === 4.1.9 === 2023112600 released 2023112600
 20231027 HotQuestion_1105v - When, Questions for max grading, is not one or more,
