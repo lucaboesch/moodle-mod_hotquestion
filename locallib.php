@@ -663,10 +663,7 @@ class mod_hotquestion {
         if ($hqs = $DB->get_records_sql($sql, $fields)) {
             $firstrowflag = 1;
             if (is_siteadmin($USER->id)) {
-                // Set $currenthqhotquestion to the first hotquestion id of the $hqs array.
-                $temphqs = $hqs;
-                reset($temphqs);
-                $currenthqhotquestion = current($temphqs)->hotquestion;
+                $currenthqhotquestion = $hqs[1]->hotquestion;
             } else {
                 $currenthqhotquestion = '';
             }
@@ -831,7 +828,7 @@ class mod_hotquestion {
      * @param int $userid The single user to calculate the rating for.
      * @return float $rating number
      */
-    public function calculate_user_ratings($userid = null): float {
+    public function calculate_user_ratings($userid = null) : float {
         global $DB, $USER;
 
         if (!$userid) {
@@ -879,7 +876,7 @@ class mod_hotquestion {
      * @param int $questionid The question id.
      * @return array Array of int userids or empty if none.
      */
-    public function get_question_voters(int $questionid): array {
+    public function get_question_voters(int $questionid) : array {
         global $DB;
 
         $voters = $DB->get_records_menu('hotquestion_votes', ['question' => $questionid], '', 'id, voter');

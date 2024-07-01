@@ -583,14 +583,17 @@ function hotquestion_get_extra_capabilities() {
 function hotquestion_get_completion_state($course, $cm, $userid, $type) {
     global $DB, $CFG;
 
+    // Get hotquestion details.
     $hotquestion = $DB->get_record('hotquestion', ['id' => $cm->instance], '*', MUST_EXIST);
+
+    // If completion option is enabled, evaluate it and return true/false
     if (!$hotquestion->completionpost && !$hotquestion->completionvote && !$hotquestion->completionpass) {
         return $type;
     }
 
     $result = $type; // Default return value.
 
-    // Check if the user has used up all attempts.
+    // Check if the user has made required number of attempts.
     if ($hotquestion->completionpost) {
         $value = $hotquestion->completionpost <=
             $DB->count_records('hotquestion_questions', [
@@ -911,7 +914,7 @@ function hotquestion_rescale_activity_grades(stdClass $course, stdClass $cm, flo
  *
  * @param stdClass $hotquestion stdClass.
  */
-function hotquestion_check_ratings_recalculation(stdClass $hotquestion): bool {
+function hotquestion_check_ratings_recalculation(stdClass $hotquestion) : bool {
     global $CFG, $DB;
 
     require_once($CFG->dirroot.'/mod/hotquestion/locallib.php');
