@@ -14,7 +14,7 @@ This files describes changes in the Hot Question code.
 
 
 === 4.2.1 === 20240701 pending
-20240625 HotQuestion - Hot Question Activity Completion possible bug #97. Made a lot
+20240625 HotQuestion_1255bt - Hot Question Activity Completion possible bug #97. Made a lot
     of changes to the completion code. See ticket for details.
 
 === 4.2.0 === 20240209 released 20240210
