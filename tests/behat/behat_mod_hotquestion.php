@@ -118,4 +118,11 @@ class behat_mod_hotquestion extends behat_base {
         return get_coursemodule_from_instance('hotquestion', $hotquestion->id, $hotquestion->course);
     }
 
+    /**
+     * @Then I wait :arg1 seconds
+     */
+    public function iWaitSeconds($arg1)
+    {
+        throw new PendingException();
+    }
 }
