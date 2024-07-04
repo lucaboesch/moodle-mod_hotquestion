@@ -98,7 +98,7 @@ $event->trigger();
 $completion = new completion_info($course);
 $completion->set_module_viewed($cm);
 
-// 20240701 Added to update completion state after a user post or adds heat.
+// 20240701 Added to update completion state after a user posts a question. Does not work for adds heat.
 $ci = new completion_info($course);
 if ($cm->completion == COMPLETION_TRACKING_AUTOMATIC) {
     $ci->update_state($cm, COMPLETION_UNKNOWN, null);
