@@ -29,7 +29,7 @@ use stdClass;
 class cron_task extends \core\task\scheduled_task {
 
     // Use the logging trait to get some nice, juicy, logging.
-    // Uncomment as needed, use \core\task\logging_trait;.
+    use \core\task\logging_trait;
 
     /**
      * Get a descriptive name for this task (shown to admins).
@@ -46,15 +46,17 @@ class cron_task extends \core\task\scheduled_task {
     public function execute() {
         global $CFG;
 
+        $this->log_start("Processing HotQuestion information.");
+
         require_once($CFG->dirroot . '/mod/hotquestion/locallib.php');
-        \hotquestion::cron();
-echo 'in the cron task file.';
-die;
+        // \hotquestion::cron();
+        //\hotquestion::update_completion_state();
+        
         // 20240704 Added to update completion state after a user adds heat or teacher adds to a students priority/grade.
-        $ci = new completion_info($course);
-        if ($cm->completion == COMPLETION_TRACKING_AUTOMATIC) {
-            $ci->update_state($cm, COMPLETION_UNKNOWN, null);
-        }
+        //$ci = new completion_info($course);
+        //if ($cm->completion == COMPLETION_TRACKING_AUTOMATIC) {
+        //    $ci->update_state($cm, COMPLETION_UNKNOWN, null);
+        //}
         return true;
     }
 }
