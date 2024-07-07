@@ -949,5 +949,27 @@ class mod_hotquestion {
             return;
         }
         $completion->set_module_viewed($this->cm);
+
+        // 20240706 Added to update completion state after a user adds heat or teacher adds to a students priority/grade.
+        $cm = $this->cm;
+        $ci = new completion_info($this->course);
+        if ($cm->completion == COMPLETION_TRACKING_AUTOMATIC) {
+            $ci->update_state($cm, COMPLETION_UNKNOWN, null);
+        }
+    }
+
+    /**
+     * Finds all hotquestion notifications that have yet to be mailed out, and mails them.
+     *
+     * Cron function to be run periodically according to the moodle cron.
+     *
+     * @return bool
+     */
+    public static function cron() {
+        $completion = new completion_info($this->course);
+        if (!$completion->is_enabled($this->cm)) {
+            return;
+        }
+        $completion->set_module_viewed($this->cm);
     }
 }
