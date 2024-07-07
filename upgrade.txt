@@ -15,9 +15,16 @@ This files describes changes in the Hot Question code.
 
 === 4.2.1 === 20240701 pending
 20220716  HotQuestion_892 - HotQuestion does not have a cron_task.php file. Added the
-    file with code for completion update_state. 
+    file with code for completion update_state. See ticket for details.
 20240625 HotQuestion_1255bt - Hot Question Activity Completion possible bug #97. Made a lot
     of changes to the completion code. See ticket for details.
+20240706 HotQuestion_1256 - The language string for entries_viewed is missing. Added
+    the missing string, $string['evententriesviewed'] = 'Viewed questions';.
+20240706 HotQuestion_1257 - The language string for entry_updated is missing. Added
+    the missing string, $string['evententryupdated'] = 'Updated question';.
+ 
+
+
 
 === 4.2.0 === 20240209 released 20240210
 20240109 HotQuestion_1162v - Hot Question - Missing privacy metadata for
