@@ -965,7 +965,7 @@ class mod_hotquestion {
      *
      * @return bool
      */
-    public static function cron() {
+    public function cron() {
         $completion = new completion_info($this->course);
         if (!$completion->is_enabled($this->cm)) {
             return;

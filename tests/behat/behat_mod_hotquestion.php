@@ -119,10 +119,11 @@ class behat_mod_hotquestion extends behat_base {
     }
 
     /**
+     * Wait for x seconds.
+     *
      * @Then I wait :arg1 seconds
      */
-    public function iWaitSeconds($arg1)
-    {
+    public function iwaitseconds($arg1) {
         throw new PendingException();
     }
 }

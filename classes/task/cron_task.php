@@ -49,14 +49,15 @@ class cron_task extends \core\task\scheduled_task {
         $this->log_start("Processing HotQuestion information.");
 
         require_once($CFG->dirroot . '/mod/hotquestion/locallib.php');
-        // \hotquestion::cron();
-        //\hotquestion::update_completion_state();
-        
+        // phpcs:ignore
+        // ...\hotquestion::cron();.
+        // ...\hotquestion::update_completion_state();.
+
         // 20240704 Added to update completion state after a user adds heat or teacher adds to a students priority/grade.
-        //$ci = new completion_info($course);
-        //if ($cm->completion == COMPLETION_TRACKING_AUTOMATIC) {
-        //    $ci->update_state($cm, COMPLETION_UNKNOWN, null);
-        //}
+        // ...$ci = new completion_info($course);.
+        // ...if ($cm->completion == COMPLETION_TRACKING_AUTOMATIC) {.
+        // ...    $ci->update_state($cm, COMPLETION_UNKNOWN, null);.
+        // ///}.
         return true;
     }
 }
