@@ -13,11 +13,17 @@ This files describes changes in the Hot Question code.
     text #61. 20231201 Started investigating how to do this.
 
 === 4.2.2 === 20240711 pending
+20221125 HotQuestion_964 - Need to rewrite the privacy.php file as it currently is not
+    working. Pull request issue #101 has fixed the problem. User data export requests
+    seem to be working correctly, now.
+20231111 HotQuestion_1118 - HotQuestion - Exception occurred while calling mod_hotquestion
+    \privacy\provider::export_user_data. Pull request issue #101 has fixed the problem.
+    User data export requests seem to be working correctly, now.
 20240711 HotQuestion_1245 - PARAM_ACTION is deprecated and should be changed so
     that it is PARAM_ALPHANUMEXT. See ticket for details. Made the change in the
     view.php file and it works.
-
-
+20240904 HotQuestion_1315 - Need to run Code checker and PHPdoc checker prior to 
+    v4.2. release. Fixed code checks as needed.
 
 === 4.2.1 === 20240707 released 20240711
 20220716 HotQuestion_892v - HotQuestion does not have a cron_task.php file. Added the
