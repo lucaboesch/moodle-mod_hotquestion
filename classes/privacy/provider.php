@@ -347,7 +347,7 @@ class provider implements \core_privacy\local\metadata\provider,
             $data = (object)[
               'hotquestion' => $record->hotquestion,
               'grade' => $record->rating,
-              'time' => transform::datetime($record->timemodified)
+              'time' => transform::datetime($record->timemodified),
             ];
             writer::with_context($context)->export_data([get_string('privacy:metadata:hotquestion_grades:path',
                 'mod_hotquestion')], $data);
