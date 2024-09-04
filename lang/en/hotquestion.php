@@ -177,8 +177,8 @@ This is nominally a count of questions, but the value attained by a user may be 
 and by voting on other questions (a user may improve the grade by participating in voting for questions by other students).';
 $string['previousround'] = 'Previous round';
 $string['privacy:metadata:hotquestion_grades'] = 'Grading data for hotquestion instances';
-$string['privacy:metadata:hotquestion_grades:userid'] = 'The ID of the user that posted this grade.';
 $string['privacy:metadata:hotquestion_grades:rawrating'] = 'Raw rating';
+$string['privacy:metadata:hotquestion_grades:userid'] = 'The ID of the user that posted this grade.';
 $string['privacy:metadata:hotquestion_questions'] = "Information about the user's entries for a given Hot Question activity. ";
 $string['privacy:metadata:hotquestion_questions:anonymous'] = 'Is the entry posted as anonymous?';
 $string['privacy:metadata:hotquestion_questions:approved'] = 'Is the question approved for general viewing?';
