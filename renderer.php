@@ -148,7 +148,7 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
             $url = '&nbsp;<a onclick="return confirm(\''.get_string('newroundconfirm', 'hotquestion').'\')" href="view.php?id='
                 .$this->hotquestion->cm->id.'&action=newround&round='
                 .$this->hotquestion->get_currentround()->id
-                .'"><img src="'.$rtemp.'" title="'
+                .'"><img src="'.$rtemp.'" width="12px" title="'
                 .get_string('newround', 'hotquestion') .'" alt="'
                 .get_string('newround', 'hotquestion') .'"/></a>';
             $toolbuttons[] = $url;
@@ -170,7 +170,7 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
             $url = '&nbsp;<a onclick="return confirm(\''.get_string('deleteroundconfirm', 'hotquestion').'\')" href="view.php?id='
                 .$this->hotquestion->cm->id.'&action=removeround&round='
                 .$this->hotquestion->get_currentround()->id
-                .'"><img src="'.$rtemp.'" title="'
+                .'"><img src="'.$rtemp.'" width="12px" title="'
                 .get_string('removeround', 'hotquestion') .'" alt="'
                 .get_string('removeround', 'hotquestion') .'"/></a>';
 
@@ -477,8 +477,8 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
                                       .$this->hotquestion->cm->id
                                       .'&action=removevote&q='.$question->id
                                       .'" class="hotquestion_remove_vote" id="question_'
-                                      .$question->id.'"> <img src="'.$ttemp3
-                                      .'" title="'.get_string('removevote', 'hotquestion')
+                                      .$question->id.'"> <img src="'.$ttemp3.'" width="12px" title="'
+                                      .get_string('removevote', 'hotquestion')
                                       .'" alt="'.get_string('removevote', 'hotquestion').'" "/></a>';
                             }
 
@@ -509,7 +509,7 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
                                     .'\')" href="view.php?id='
                                     .$this->hotquestion->cm->id.'&action=remove&q='
                                     .$question->id.'" class="hotquestion_vote" id="question_'
-                                    .$question->id.'"><img src="'.$rtemp.'" title="'
+                                    .$question->id.'"><img src="'.$rtemp.'" width="12px" title="'
                                     .get_string('questionremove', 'hotquestion') .'" alt="'
                                     .get_string('questionremove', 'hotquestion') .'"/></a>';
                             $line[] = $remove;
@@ -528,14 +528,14 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
                                 $approve .= '&nbsp;<a href="view.php?id='
                                          .$this->hotquestion->cm->id.'&action=approve&q='
                                          .$question->id.'" class="hotquestion_vote" id="question_'
-                                         .$question->approved.'"><img src="'.$a1temp.'" title="'
+                                         .$question->approved.'"><img src="'.$a1temp.'" width="12px" title="'
                                          .get_string('approvedyes', 'hotquestion') .'" alt="'
                                          .get_string('approvedyes', 'hotquestion') .'"/></a>';
                             } else {
                                 $approve .= '&nbsp;<a href="view.php?id='
                                          .$this->hotquestion->cm->id.'&action=approve&q='
                                          .$question->id.'" class="hotquestion_vote" id="question_'
-                                         .$question->approved.'"><img src="'.$a2temp.'" title="'
+                                         .$question->approved.'"><img src="'.$a2temp.'" width="12px" title="'
                                          .get_string('approvedno', 'hotquestion') .'" alt="'
                                          .get_string('approvedno', 'hotquestion') .'"/></a>';
                             }
