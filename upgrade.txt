@@ -12,7 +12,12 @@ This files describes changes in the Hot Question code.
 20231201 HotQuestion_1123 - Allow the 'submit your question' text area to be plain
     text #61. 20231201 Started investigating how to do this.
 
-=== 4.2.2 === 20240711 pending
+
+=== 4.2.3 === 20241009
+202040904 HotQuestion_1316 - Some tool icons render way oversize in Moodle 4.5 code.
+    Modified code in renderer.php to set width of icons where need. See ticket for details.
+
+=== 4.2.2 === 20240711
 20221125 HotQuestion_964 - Need to rewrite the privacy.php file as it currently is not
     working. Pull request issue #101 has fixed the problem. User data export requests
     seem to be working correctly, now.
