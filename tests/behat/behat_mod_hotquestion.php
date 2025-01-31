@@ -38,21 +38,6 @@ use Behat\Behat\Context\Step\Given as Given, Behat\Behat\Context\Step\When as Wh
 class behat_mod_hotquestion extends behat_base {
 
     /**
-     * Step to open current course or activity settings page (language string changed between 3.11 and 4.0)
-     *
-     * @When /^I open course or activity (hotquestion) settings page$/
-     * @return void
-     */
-    public function i_open_course_or_activity_settings_page(): void {
-        global $CFG;
-        if ($CFG->version < 2022012100) {
-            $this->execute("behat_navigation::i_navigate_to_in_current_page_administration", ['Edit settings']);
-        } else {
-            $this->execute("behat_navigation::i_navigate_to_in_current_page_administration", ['Settings']);
-        }
-    }
-
-    /**
      * Convert page names to URLs for steps like 'When I am on the "[page name]" page'.
      *
      * Recognised page names are:
