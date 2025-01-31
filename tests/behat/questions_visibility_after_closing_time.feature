@@ -44,10 +44,7 @@ Feature: Set entry visibility after close time for HotQuestion
     And I should see "First question"
     Then I log out
     #Teacher 1 set time close
-    Given I log in as "teacher1"
-    When I am on "Course 1" course homepage
-    And I follow "Test hotquestion name"
-    And I open course or activity settings page
+    When I am on the "Test hotquestion name" "mod_hotquestion > Edit" page logged in as "teacher1"
     And I set the following fields to these values:
       | timeclose[enabled] | 1 |
       | timeclose[day] | 1 |
@@ -71,7 +68,7 @@ Feature: Set entry visibility after close time for HotQuestion
     And I press "Click to post"
     And I should not see "No entries yet."
     And I should see "First question"
-    Then I open course or activity settings page
+    Then I am on the "Test hotquestion name" "mod_hotquestion > Edit" page
     And I set the following fields to these values:
       | timeclose[enabled] | 1 |
       | timeclose[day] | 1 |
