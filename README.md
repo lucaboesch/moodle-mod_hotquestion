@@ -1,3 +1,5 @@
+[![Moodle Plugin CI](https://github.com/drachels/moodle-mod_hotquestion/actions/workflows/moodle-plugin-ci.yml/badge.svg)](https://github.com/drachels/moodle-mod_hotquestion/actions/workflows/moodle-plugin-ci.yml)
+
 # Moodle Hot Question module
 The first moodle activity for physical classroom. The idea comes from
 Purdue University's hotseat.
