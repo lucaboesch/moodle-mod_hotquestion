@@ -1,6 +1,13 @@
 This files describes changes in the Hot Question code.
 
 === 4.?.? === Items that hopefully will be in a future release.
+
+=== 4.2.5 === 2025060200
+HotQuestion_1378 - HotQuestion - Adopting for Moodle Plugin CI. #108. Did a merge
+    to make the code changes and created new release.
+
+
+=== 4.2.4 === 2025041500
 20220421 HotQuestion_844 - The Moodle Mobile app is not supported.
 20220430 HotQuestion_853 - Sometimes when a user has no question submitted, they
     are getting a grade anyway. 
