@@ -42,46 +42,55 @@ Feature: Users can vote on named or anonymous entries to hotquestion
     Then I should see "First question by student 1"
     And I should see "Posted by Student 1"
     Then I log out
-	#Student 2 votes.
+	#Student 2 votes for the Anonymous post.
     Given I log in as "student2"
     When I am on "Course 1" course homepage
     And I follow "Test hotquestion name"
+    And I should see "0" in the "Anonymous" "table_row"
     And I click on "Vote" "link" in the "Anonymous" "table_row"
     Then I should see "1" in the "Anonymous" "table_row"
     Then I log out
-    # Admin 1 votes.
+    # Admin 1 votes for the Anonymous post and for the Student 1 post.
     Given I log in as "admin"
     When I am on "Course 1" course homepage
     And I follow "Test hotquestion name"
+    And I should see "1" in the "Anonymous" "table_row"
     And I click on "Vote" "link" in the "Anonymous" "table_row"
     Then I should see "2" in the "Anonymous" "table_row"
+    And I should see "0" in the "Student 1" "table_row"
     And I click on "Vote" "link" in the "Student 1" "table_row"
     Then I should see "1" in the "Student 1" "table_row"
     Then I log out
-	# Teacher 1 votes.
+	# Teacher 1 votes for the Anonymous post and for the Student 1 post.
     Given I log in as "teacher1"
     When I am on "Course 1" course homepage
     And I follow "Test hotquestion name"
+    And I should see "2" in the "Anonymous" "table_row"
     And I click on "Vote" "link" in the "Anonymous" "table_row"
-    Then I should see "2" in the "Anonymous" "table_row"
+    Then I should see "3" in the "Anonymous" "table_row"
+    And I should see "1" in the "Student 1" "table_row"
     And I click on "Vote" "link" in the "Student 1" "table_row"
-    Then I should see "1" in the "Student 1" "table_row"
+    Then I should see "2" in the "Student 1" "table_row"
     Then I log out
-	#Manager 1 votes.
+	#Manager 1 votes for the Anonymous post and for the Student 1 post.
     Given I log in as "manager1"
     When I am on "Course 1" course homepage
     And I follow "Test hotquestion name"
+    And I should see "3" in the "Anonymous" "table_row"
     And I click on "Vote" "link" in the "Anonymous" "table_row"
-    Then I should see "3" in the "Anonymous" "table_row"
-    And I click on "Vote" "link" in the "Student 1" "table_row"
+    Then I should see "4" in the "Anonymous" "table_row"
     Then I should see "2" in the "Student 1" "table_row"
+    And I click on "Vote" "link" in the "Student 1" "table_row"
+    Then I should see "3" in the "Student 1" "table_row"
     Then I log out
 	#Teacher 2 votes.
     Given I log in as "teacher2"
     When I am on "Course 1" course homepage
     And I follow "Test hotquestion name"
+    And I should see "4" in the "Anonymous" "table_row"
     And I click on "Vote" "link" in the "Anonymous" "table_row"
-    Then I should see "4" in the "Anonymous" "table_row"
+    Then I should see "5" in the "Anonymous" "table_row"
+    And I should see "3" in the "Student 1" "table_row"
     And I click on "Vote" "link" in the "Student 1" "table_row"
     Then I should see "4" in the "Student 1" "table_row"
     # Teacher 2 verifies adding votes is logged for everyone.
