@@ -960,3 +960,14 @@ function hotquestion_recalculate_rating_grades(int $cmid) {
 
     $hq->update_users_grades($users);
 }
+
+/**
+ * Get icon mapping for font-awesome.
+ *
+ * @return  array
+ */
+function mod_hotquestion_get_fontawesome_icon_map() {
+    return [
+        'mod_hotquestion:t/disapprove' => 'fa-thumbs-down',
+    ];
+}
