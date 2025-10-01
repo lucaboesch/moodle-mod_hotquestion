@@ -27,7 +27,6 @@ Feature: Users can post named or anonymous entries to hotquestion
       | capability                  | permission | role    | contextlevel | reference |
       | moodle/site:accessallgroups | Allow      | teacher | System       |           |
 
-  @javascript
   Scenario: A user posts named and anonymous entries
     # Admin User adds posts.
     Given I log in as "admin"
