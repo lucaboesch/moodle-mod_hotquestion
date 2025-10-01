@@ -23,6 +23,10 @@ Feature: Users can post named or anonymous entries to hotquestion
     And the following "activities" exist:
       | activity     | name                   | intro             | course | idnumber     | submitdirections           | anonymouspost | approval |
       | hotquestion  | Test hotquestion name  | Hotquestion intro | C1     | hotquestion1 | Submit your question here: | 1             | 0        |
+    And the following "permission overrides" exist:
+      | capability                  | permission | role    | contextlevel | reference |
+      | moodle/site:accessallgroups | Allow      | teacher | System       |           |
+
   Scenario: A user posts named and anonymous entries
     # Admin User adds posts.
     Given I log in as "admin"

@@ -25,6 +25,10 @@ Feature: Users can vote on named or anonymous entries to hotquestion
     And the following "activities" exist:
       | activity    | name                  | intro             | course | idnumber     | submitdirections           | heatvisibility | heatlabel | heatlimit |
       | hotquestion | Test hotquestion name | Hotquestion intro | C1     | hotquestion1 | Submit your question here: | 1              | Heat      | 5         |
+    And the following "permission overrides" exist:
+      | capability                  | permission | role    | contextlevel | reference |
+      | moodle/site:accessallgroups | Allow      | teacher | System       |           |
+
   Scenario: A user follows vote to increase heat
     # Student 1 adds posts.
     Given I log in as "student1"
