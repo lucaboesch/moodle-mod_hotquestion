@@ -140,18 +140,11 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
             $options = [];
             $options['id'] = $this->hotquestion->cm->id;
             $options['action'] = 'newround';
-            if ($CFG->branch > 32) {
-                $rtemp = $this->image_url('t/add');
-            } else {
-                $rtemp = $this->pix_url('t/add');
-            }
-            $url = '&nbsp;<a onclick="return confirm(\''.get_string('newroundconfirm', 'hotquestion').'\')" href="view.php?id='
-                .$this->hotquestion->cm->id.'&action=newround&round='
-                .$this->hotquestion->get_currentround()->id
-                .'"><img src="'.$rtemp.'" width="12px" title="'
-                .get_string('newround', 'hotquestion') .'" alt="'
-                .get_string('newround', 'hotquestion') .'"/></a>';
-            $toolbuttons[] = $url;
+            $url = 'view.php?id='
+                . $this->hotquestion->cm->id.'&action=newround&round='
+                . $this->hotquestion->get_currentround()->id;
+            $toolbuttons[] = html_writer::link($url, $this->pix_icon('t/add', get_string('newround', 'hotquestion')),
+                ['onclick' => "return confirm('" . get_string('newroundconfirm', 'hotquestion') . "')"]);
         }
 
         // Print remove round toolbutton.
@@ -162,19 +155,12 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
             $options['action'] = 'removeround';
             $options['round'] = $this->hotquestion->get_currentround()->id;
 
-            if ($CFG->branch > 32) {
-                $rtemp = $this->image_url('t/delete');
-            } else {
-                $rtemp = $this->pix_url('t/delete');
-            }
-            $url = '&nbsp;<a onclick="return confirm(\''.get_string('deleteroundconfirm', 'hotquestion').'\')" href="view.php?id='
-                .$this->hotquestion->cm->id.'&action=removeround&round='
-                .$this->hotquestion->get_currentround()->id
-                .'"><img src="'.$rtemp.'" width="12px" title="'
-                .get_string('removeround', 'hotquestion') .'" alt="'
-                .get_string('removeround', 'hotquestion') .'"/></a>';
+            $url = 'view.php?id='
+                . $this->hotquestion->cm->id.'&action=removeround&round='
+                . $this->hotquestion->get_currentround()->id;
 
-            $toolbuttons[] = $url;
+            $toolbuttons[] = html_writer::link($url, $this->pix_icon('t/delete', get_string('removeround', 'hotquestion')),
+                ['onclick' => "return confirm('" . get_string('deleteroundconfirm', 'hotquestion') . "')"]);
         }
 
         // Print refresh toolbutton.
@@ -423,33 +409,19 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
                         $heat = $question->votecount;
                         $remove = '';
                         $approve = '';
-                        // Set code for thumbs up/thumbs down pictures based on Moodle version.
-                        if ($CFG->branch > 32) {
-                            $ttemp1 = $this->image_url('s/yes');
-                            $ttemp2 = $this->image_url('s/no');
-                            $ttemp3 = $this->image_url('t/delete');
-                        } else {
-                            $ttemp1 = $this->pix_url('s/yes');
-                            $ttemp2 = $this->pix_url('s/no');
-                            $ttemp3 = $this->pix_url('t/delete');
-                        }
                         // Process priority code here.
                         // Had to add width/height to priority and heat due to now using svg in Moodle 3.6.
                         if (has_capability('mod/hotquestion:rate', $context)) {
                             // Process priority column.
-                            $tpriority .= '&nbsp;<a href="view.php?id='
-                                       .$this->hotquestion->cm->id.'&action=tpriority&u=1&q='
-                                       .$question->id.'" class="hotquestion_vote" id="question_'
-                                       .$question->id.'"><img src="'.$ttemp1.'" title="'
-                                       .get_string('teacherpriority', 'hotquestion').'" alt="'
-                                       .get_string('teacherpriority', 'hotquestion')
-                                       .'" style="width:16px;height:16px;"/></a><br> &nbsp;';
-                            $tpriority .= '&nbsp; &nbsp;<a href="view.php?id='
-                                       .$this->hotquestion->cm->id.'&action=tpriority&u=0&q='
-                                       .$question->id.'" class="hotquestion_vote" id="question_'
-                                       .$question->id.'"><img src="'.$ttemp2.'" title="'
-                                       .get_string('teacherpriority', 'hotquestion') .'" alt="'
-                                       .get_string('teacherpriority', 'hotquestion') .'" style="width:16px;height:16px;"/></a>';
+                            $url = 'view.php?id='.$this->hotquestion->cm->id.'tpriority&u=1&q='.$question->id;
+                            $tpriority .= '&nbsp;'.html_writer::link($url, $this->pix_icon('t/approve',
+                                    get_string('teacherpriority', 'hotquestion')),
+                                ['class' => 'hotquestion_vote', 'id' => 'question_'.$question->id]);
+                            $tpriority .= '<br> &nbsp;';
+                            $url = 'view.php?id='.$this->hotquestion->cm->id.'tpriority&u=0&q='.$question->id;
+                            $tpriority .= '&nbsp;&nbsp;'.html_writer::link($url, $this->pix_icon('t/disapprove',
+                                    get_string('teacherpriority', 'hotquestion'), 'mod_hotquestion'),
+                                ['class' => 'hotquestion_vote', 'id' => 'question_'.$question->id]);
                         }
 
                         // Check teacher priority column visibilty settings.
@@ -464,22 +436,16 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
                         // Print the vote cron case. 20200528 Added check for votes remaining.
                         if ($allowvote && $this->hotquestion->can_vote_on($question) && ($remaining >= 0)) {
                             if (!$this->hotquestion->has_voted($question->id) && ($remaining >= 1)) {
-                                $heat .= '&nbsp;<a href="view.php?id='
-                                      .$this->hotquestion->cm->id
-                                      .'&action=vote&q='.$question->id
-                                      .'" class="hotquestion_vote" id="question_'
-                                      .$question->id.'"><img src="'.$ttemp1
-                                      .'" title="'.get_string('vote', 'hotquestion')
-                                      .'" alt="'.get_string('vote', 'hotquestion').'" style="width:16px;height:16px;"/></a>';
+                                $url = "view.php?id=".$this->hotquestion->cm->id."&action=vote&q=".$question->id;
+                                $heat .= html_writer::link($url, $this->pix_icon('t/approve',
+                                    get_string('vote', 'hotquestion')),
+                                    ['class' => 'hotquestion_vote', 'id' => 'question_'.$question->id]);
                             } else if ($this->hotquestion->has_voted($question->id)) {
                                 // 20200608 Added remove vote capability.
-                                $heat .= '&nbsp;<a href="view.php?id='
-                                      .$this->hotquestion->cm->id
-                                      .'&action=removevote&q='.$question->id
-                                      .'" class="hotquestion_remove_vote" id="question_'
-                                      .$question->id.'"> <img src="'.$ttemp3.'" width="12px" title="'
-                                      .get_string('removevote', 'hotquestion')
-                                      .'" alt="'.get_string('removevote', 'hotquestion').'" "/></a>';
+                                $url = "view.php?id=".$this->hotquestion->cm->id."&action=removevote&q=".$question->id;
+                                $heat .= html_writer::link($url, $this->pix_icon('t/delete',
+                                    get_string('removevote', 'hotquestion')),
+                                    ['class' => 'hotquestion_remove_vote', 'id' => 'question_'.$question->id]);
                             }
 
                         }
@@ -493,51 +459,30 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
                             $line[] = ' ';
                         }
 
-                        // Set code for remove picture based on Moodle version.
-                        if ($CFG->branch > 32) {
-                            $rtemp = $this->image_url('t/delete');
-                        } else {
-                            $rtemp = $this->pix_url('t/delete');
-                        }
                         // Print the remove and approve case option for teacher and manager.
                         if (has_capability('mod/hotquestion:manageentries', $context)
                             || has_capability('mod/hotquestion:rate', $context)) {
                             // Process remove column.
                             // Added delete confirm 2/8/19.
-                            $remove .= '&nbsp;<a onclick="return confirm(\''
-                                    .get_string('deleteentryconfirm', 'hotquestion')
-                                    .'\')" href="view.php?id='
-                                    .$this->hotquestion->cm->id.'&action=remove&q='
-                                    .$question->id.'" class="hotquestion_vote" id="question_'
-                                    .$question->id.'"><img src="'.$rtemp.'" width="12px" title="'
-                                    .get_string('questionremove', 'hotquestion') .'" alt="'
-                                    .get_string('questionremove', 'hotquestion') .'"/></a>';
+                            $url = 'view.php?id='.$this->hotquestion->cm->id.'&action=remove&q='.$question->id;
+                            $remove .= html_writer::link($url, $this->pix_icon('t/delete',
+                                get_string('questionremove', 'hotquestion')), ['onclick' => "return confirm('" .
+                                get_string('deleteentryconfirm', 'hotquestion') . "')",
+                                'class' => 'hotquestion_vote', 'id' => 'question_'.$question->id]);
                             $line[] = $remove;
 
                             // Process approval column.
-                            // Set code for approve toggle picture based on Moodle version.
-                            if ($CFG->branch > 32) {
-                                $a1temp = $this->image_url('t/go');
-                                $a2temp = $this->image_url('t/stop');
-                            } else {
-                                $a1temp = $this->pix_url('t/go');
-                                $a2temp = $this->pix_url('t/stop');
-                            }
                             // Show approval column.
                             if ($question->approved) {
-                                $approve .= '&nbsp;<a href="view.php?id='
-                                         .$this->hotquestion->cm->id.'&action=approve&q='
-                                         .$question->id.'" class="hotquestion_vote" id="question_'
-                                         .$question->approved.'"><img src="'.$a1temp.'" width="12px" title="'
-                                         .get_string('approvedyes', 'hotquestion') .'" alt="'
-                                         .get_string('approvedyes', 'hotquestion') .'"/></a>';
+                                $url = 'view.php?id='.$this->hotquestion->cm->id.'&action=approve&q='.$question->id;
+                                $approve .= html_writer::link($url, $this->pix_icon('t/go',
+                                    get_string('approvedyes', 'hotquestion')),
+                                    ['class' => 'hotquestion_vote', 'id' => 'question_'.$question->approved]);
                             } else {
-                                $approve .= '&nbsp;<a href="view.php?id='
-                                         .$this->hotquestion->cm->id.'&action=approve&q='
-                                         .$question->id.'" class="hotquestion_vote" id="question_'
-                                         .$question->approved.'"><img src="'.$a2temp.'" width="12px" title="'
-                                         .get_string('approvedno', 'hotquestion') .'" alt="'
-                                         .get_string('approvedno', 'hotquestion') .'"/></a>';
+                                $url = 'view.php?id='.$this->hotquestion->cm->id.'&action=approve&q='.$question->id;
+                                $approve .= html_writer::link($url, $this->pix_icon('t/stop',
+                                    get_string('approvedno', 'hotquestion')),
+                                    ['class' => 'hotquestion_vote', 'id' => 'question_'.$question->approved]);
                             }
                             $line[] = $approve;
                         }
