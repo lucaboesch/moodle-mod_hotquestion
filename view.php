@@ -299,7 +299,7 @@ if (!$ajax) {
     }
 
     // 20230522 Added a single row table to make both group and viewunapproved preference drop down menus work.
-    echo '<table style="width:100%"><tr><td style="width:25%>';
+    echo '<table style="width:100%" class="table-reboot"><tr><td style="width:25%>';
     // Print group information (A drop down box will be displayed if the user
     // is a member of more than one group, or has access to all groups).
     echo groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/hotquestion/view.php?id='.$cm->id);
