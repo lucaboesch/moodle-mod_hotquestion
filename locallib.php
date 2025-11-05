@@ -47,7 +47,6 @@ define('HOTQUESTION_EVENT_TYPE_CLOSE', 'close');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_hotquestion {
-
     /** @var int callback arg - the instance of the current hotquestion activity */
     public $instance;
     /** @var int callback arg - the instance of the current hotquestion module */
@@ -100,6 +99,7 @@ class mod_hotquestion {
         if ($user == -1) {
             $user = $USER->id;
         }
+
         return $DB->record_exists('hotquestion_votes', ['question' => $question, 'voter' => $user]);
     }
 
@@ -129,9 +129,11 @@ class mod_hotquestion {
                 $votes->voter = $USER->id;
                 $DB->insert_record('hotquestion_votes', $votes);
             }
+
             // Update viewed completion state for current user.
             $this->update_completion_state();
         }
+
         // Contrib by ecastro ULPGC, update grades for questions author and voters.
         // 20220623 Moved so entering viewgrades.php page always updates to the latest grade.
         $this->update_users_grades([$question->userid, $USER->id]);
@@ -149,7 +151,6 @@ class mod_hotquestion {
         $context = context_module::instance($this->cm->id);
         $question = $DB->get_record('hotquestion_questions', ['id' => $question]);
         if ($question && $this->can_vote_on($question)) {
-
             // Trigger and log a remove_vote event.
             $params = [
                 'objectid' => $this->cm->id,
@@ -161,6 +162,7 @@ class mod_hotquestion {
             if ($this->has_voted($question->id)) {
                 $DB->delete_records('hotquestion_votes', ['question' => $question->id, 'voter' => $USER->id]);
             }
+
             // Update viewed completion state for current user.
             $this->update_completion_state();
             // Contrib by ecastro ULPGC, update grades for question author and voters.
@@ -180,6 +182,7 @@ class mod_hotquestion {
         if (is_int($question)) {
             $question = $DB->get_record('hotquestion_questions', ['id' => $question]);
         }
+
         if (empty($user)) {
             $user = $USER;
         }
@@ -319,6 +322,7 @@ class mod_hotquestion {
             $this->prevround = array_pop($rounds);
             $this->nextround = null;
         }
+
         return $roundid;
     }
 
@@ -380,6 +384,7 @@ class mod_hotquestion {
         if ($this->currentround->endtime == 0) {
             $this->currentround->endtime = 0xFFFFFFFF;  // Hack.
         }
+
         $params = [
             $this->instance->id,
             $this->currentround->starttime,
@@ -440,9 +445,11 @@ class mod_hotquestion {
             foreach ($users as $user) {
                 $this->update_completion_state($user);
             }
+
             // Contrib by ecastro ULPGC, update grades for question author and voters.
             $this->update_users_grades($users);
         }
+
         return $this->currentround;
     }
 
@@ -471,6 +478,7 @@ class mod_hotquestion {
         if ($this->currentround->endtime == 0) {
             $this->currentround->endtime = 0xFFFFFFFF;  // Hack.
         }
+
         $params = [
             $this->instance->id,
             $this->currentround->starttime,
@@ -507,9 +515,11 @@ class mod_hotquestion {
                 foreach ($users as $user) {
                     $this->update_completion_state($user);
                 }
+
                 // Contrib by ecastro ULPGC, update grades for question author and voters.
                 $this->update_users_grades($users);
             }
+
             // Now that all questions and votes are gone, remove the round.
             $dbround = $DB->get_record('hotquestion_rounds', ['id' => $roundid]);
             $DB->delete_records('hotquestion_rounds', ['id' => $dbround->id]);
@@ -518,6 +528,7 @@ class mod_hotquestion {
             $dbround = $DB->get_record('hotquestion_rounds', ['id' => $roundid]);
             $DB->delete_records('hotquestion_rounds', ['id' => $dbround->id]);
         }
+
         // Now we need to see if we need a new round or have one we can still use.
         $rounds = $DB->get_records('hotquestion_rounds', ['hotquestion' => $this->instance->id], 'id DESC');
 
@@ -536,6 +547,7 @@ class mod_hotquestion {
                 return;
             }
         }
+
         return $this->currentround;
     }
 
@@ -546,9 +558,9 @@ class mod_hotquestion {
      * @param string $delimiter - The character to use as a delimiter.
      * @return nothing
      */
-    public function download_questions($chq, $filename = "export.csv", $delimiter=";") {
+    public function download_questions($chq, $filename = "export.csv", $delimiter = ";") {
         global $CFG, $DB, $USER;
-        require_once($CFG->libdir.'/csvlib.class.php');
+        require_once($CFG->libdir . '/csvlib.class.php');
 
         $context = context_module::instance($this->cm->id);
 
@@ -575,16 +587,17 @@ class mod_hotquestion {
             $whichhqs = ('AND hq.hotquestion = ');
             $whichhqs .= (':thisinstid');
 
-            $csv->filename = clean_filename(($this->course->shortname).'_');
+            $csv->filename = clean_filename(($this->course->shortname) . '_');
             $csv->filename .= clean_filename(($this->instance->name));
         }
+
             // Add fields with the column labels for ONLY the current HQ activity.
         $fields = [
             get_string('firstname'),
             get_string('lastname'),
             get_string('userid', 'hotquestion'),
-            get_string('hotquestion', 'hotquestion').' ID',
-            get_string('question', 'hotquestion').' ID',
+            get_string('hotquestion', 'hotquestion') . ' ID',
+            get_string('question', 'hotquestion') . ' ID',
             get_string('time', 'hotquestion'),
             get_string('anonymous', 'hotquestion'),
             $this->instance->teacherprioritylabel,
@@ -593,7 +606,7 @@ class mod_hotquestion {
             $this->instance->questionlabel,
             get_string('comments'),
         ];
-        $csv->filename .= clean_filename(get_string('exportfilenamep2', 'hotquestion').gmdate("Ymd_Hi").'GMT.csv');
+        $csv->filename .= clean_filename(get_string('exportfilenamep2', 'hotquestion') . gmdate("Ymd_Hi") . 'GMT.csv');
 
         // Now add this instance id that's needed in the sql for teachers and managers downloads.
         $fields = [$fields, 'thisinstid' => $this->instance->id];
@@ -666,13 +679,14 @@ class mod_hotquestion {
             } else {
                 $currenthqhotquestion = '';
             }
+
             foreach ($hqs as $q) {
                 $fields2 = [
                     get_string('firstname'),
                     get_string('lastname'),
                     get_string('userid', 'hotquestion'),
-                    get_string('hotquestion', 'hotquestion').' ID',
-                    get_string('question', 'hotquestion').' ID',
+                    get_string('hotquestion', 'hotquestion') . ' ID',
+                    get_string('question', 'hotquestion') . ' ID',
                     get_string('time', 'hotquestion'),
                     get_string('anonymous', 'hotquestion'),
                     $q->teacherprioritylabel,
@@ -686,21 +700,25 @@ class mod_hotquestion {
                 $comment = '';
                 // 20220818 If there are any, get the comments for each question to add in the export file.
                 // 20221124 Modified to include the component.
-                if ($cmts = $DB->get_records('comments', [
-                    'itemid' => $q->question,
-                    'component' => 'mod_hotquestion',
-                    ],
-                    'userid,
+                if (
+                    $cmts = $DB->get_records(
+                        'comments',
+                        [
+                        'itemid' => $q->question,
+                        'component' => 'mod_hotquestion',
+                        ],
+                        'userid,
                     content,
                     timecreated'
-                    )) {
-
+                    )
+                ) {
                     $temp = count($cmts);
-                    $comment .= '('.$temp.' '.get_string('comments').') ';
+                    $comment .= '(' . $temp . ' ' . get_string('comments') . ') ';
                     foreach ($cmts as $cmt) {
-                        $comment .= get_string('user').' '.$cmt->userid.' commented: '.$cmt->content.' | ';
+                        $comment .= get_string('user') . ' ' . $cmt->userid . ' commented: ' . $cmt->content . ' | ';
                     }
                 }
+
                 // 20220819 Split admins output into sections by HotQuestions activities.
                 if ((($currenthqhotquestion <> $q->hotquestion) && (is_siteadmin($USER->id))) || ($firstrowflag)) {
                     $currenthqhotquestion = $q->hotquestion;
@@ -714,8 +732,8 @@ class mod_hotquestion {
                     if (!$firstrowflag) {
                         $csv->add_data($blankrow);
                         $activityinfo = [
-                            get_string('course').': '.$currentcrsname->shortname,
-                            get_string('activity').': '.$currenthqname->name,
+                            get_string('course') . ': ' . $currentcrsname->shortname,
+                            get_string('activity') . ': ' . $currenthqname->name,
                         ];
                     } else {
                         $activityinfo = [
@@ -729,24 +747,28 @@ class mod_hotquestion {
                             null,
                             null,
                             null,
-                            get_string('exportfilenamep2', 'hotquestion').
-                                gmdate("Ymd_Hi").get_string('for', 'hotquestion').
+                            get_string('exportfilenamep2', 'hotquestion') .
+                                gmdate("Ymd_Hi") . get_string('for', 'hotquestion') .
                                 $CFG->wwwroot,
                         ];
                         $csv->add_data($activityinfo);
                         $activityinfo = [
-                            get_string('course').': '.$currentcrsname->shortname,
-                            get_string('activity').': '.$currenthqname->name,
+                            get_string('course') . ': ' . $currentcrsname->shortname,
+                            get_string('activity') . ': ' . $currenthqname->name,
                         ];
                     }
+
                     $csv->add_data($activityinfo);
                     $csv->add_data($fields2);
                     $firstrowflag = 0;
                 }
+
                 // 20220821 Cleaning the content to remove all the paragraph tags to make things easier to read.
-                $cleanedcontent = format_string($q->content,
-                                                $striplinks = true,
-                                                $options = null);
+                $cleanedcontent = format_string(
+                    $q->content,
+                    $striplinks = true,
+                    $options = null
+                );
                 $output = [
                     $q->firstname,
                     $q->lastname,
@@ -764,6 +786,7 @@ class mod_hotquestion {
                 $csv->add_data($output);
             }
         }
+
         // Download the completed array of questions and comments.
         $csv->download_file();
         exit;
@@ -789,6 +812,7 @@ class mod_hotquestion {
             $question->approved = '1';
             $DB->update_record('hotquestion_questions', $question);
         }
+
         $this->update_users_grades([$question->userid, $USER->id]);
         return;
     }
@@ -814,6 +838,7 @@ class mod_hotquestion {
             $question->tpriority = --$question->tpriority;
             $DB->update_record('hotquestion_questions', $question);
         }
+
         $this->update_users_grades([$question->userid, $USER->id]);
     }
 
@@ -833,6 +858,7 @@ class mod_hotquestion {
         if (!$userid) {
             $userid = $USER->id;
         }
+
         // Get any questions by this user and any votes if they have some.
         $sql = "SELECT q.id, q.approved, q.tpriority, count(v.voter) as votes
                   FROM {hotquestion_questions} q
@@ -853,6 +879,7 @@ class mod_hotquestion {
                 $grade += $qrate + $question->votes * $this->instance->factorheat / 100;
             }
         }
+
         // Get any votes made by this user.
         $sql = "SELECT COUNT(v.id)
                   FROM {hotquestion_votes} v
@@ -883,6 +910,7 @@ class mod_hotquestion {
         if ($voters) {
             return array_values($voters);
         }
+
         return [];
     }
 
@@ -899,18 +927,20 @@ class mod_hotquestion {
             return false;
         }
 
-        list($insql, $params) = $DB->get_in_or_equal($users);
+        [$insql, $params] = $DB->get_in_or_equal($users);
         $select = "userid $insql AND hotquestion = ? ";
         $params[] = $this->instance->id;
-        $grades = $DB->get_records_select('hotquestion_grades',
-                                          $select,
-                                          $params,
-                                          '',
-                                          'userid,
+        $grades = $DB->get_records_select(
+            'hotquestion_grades',
+            $select,
+            $params,
+            '',
+            'userid,
                                           id,
                                           hotquestion,
                                           rawrating,
-                                          timemodified');
+                                          timemodified'
+        );
 
         $now = time();
         $newgrade = new stdClass();
@@ -932,6 +962,7 @@ class mod_hotquestion {
                 $newgrade->userid = $userid;
                 $DB->insert_record('hotquestion_grades', $newgrade);
             }
+
             // Calling the function in lib.php at about line 807.
             hotquestion_update_grades($this->instance, $userid);
         }
@@ -948,6 +979,7 @@ class mod_hotquestion {
         if (!$completion->is_enabled($this->cm)) {
             return;
         }
+
         $completion->set_module_viewed($this->cm);
 
         // 20240706 Added to update completion state after a user adds heat or teacher adds to a students priority/grade.
@@ -970,6 +1002,7 @@ class mod_hotquestion {
         if (!$completion->is_enabled($this->cm)) {
             return;
         }
+
         $completion->set_module_viewed($this->cm);
     }
 }

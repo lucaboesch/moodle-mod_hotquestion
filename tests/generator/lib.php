@@ -33,7 +33,6 @@ defined('MOODLE_INTERNAL') || die(); // @codingStandardsIgnoreLine
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_hotquestion_generator extends testing_module_generator {
-
     /**
      * @var int keep track of how many hotquestions have been created.
      */

@@ -47,7 +47,6 @@ require_once($CFG->libdir . '/gradelib.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class viewgrades extends table_sql {
-
     /**
      * Maximum number of hotquestion questions to display in the "Show responses" table.
      */
@@ -111,8 +110,10 @@ class viewgrades extends table_sql {
         parent::__construct('hotquestion-showranking-list-' . $hotquestion->cm->instance);
 
         $this->showall = optional_param($this->showallparamname, 0, PARAM_BOOL);
-        $this->define_baseurl(new moodle_url('/mod/hotquestion/grades.php',
-            ['id' => $this->hotquestion->cm->id]));
+        $this->define_baseurl(new moodle_url(
+            '/mod/hotquestion/grades.php',
+            ['id' => $this->hotquestion->cm->id]
+        ));
 
         // 20220520 Added to fix groups on grades.php page.
         $currentgroup = groups_get_activity_group($this->hotquestion->cm, true);
@@ -121,29 +122,32 @@ class viewgrades extends table_sql {
         if ($currentgroup) {
             $group = $currentgroup;
             $groupname = groups_get_group_name($currentgroupid);
-
         } else {
             $group = '';
             $groupname = 'All participants';
         }
+
         if ($group) {
             $this->baseurl->param('group', $group);
         }
+
         if ($this->showall) {
             $this->baseurl->param($this->showallparamname, $this->showall);
         }
 
         // 20230407 Adding course name to filename.
-        $coursename = format_string($hotquestion->course->fullname.' - ');
+        $coursename = format_string($hotquestion->course->fullname . ' - ');
         $name = format_string($hotquestion->instance->name);
 
         $this->is_downloadable(true);
-        $this->is_downloading(optional_param($this->downloadparamname, 0, PARAM_ALPHA),
-                $coursename.$name.' - '.$groupname, get_string('viewgrades', 'hotquestion'));
+        $this->is_downloading(
+            optional_param($this->downloadparamname, 0, PARAM_ALPHA),
+            $coursename . $name . ' - ' . $groupname,
+            get_string('viewgrades', 'hotquestion')
+        );
         $this->useridfield = 'userid';
 
         $this->init($group, $userid);
-
     }
 
     /**
@@ -174,19 +178,20 @@ class viewgrades extends table_sql {
             if ($scale = $DB->get_record('scale', ['id' => -($this->hotquestion->instance->grade)])) {
                 $this->cache['scale'] = make_menu_from_list($scale->scale);
             }
+
             $finalgrade = count($this->cache['scale']);
-            $finalgrade .= '='.($this->cache['scale'][$finalgrade]);
+            $finalgrade .= '=' . ($this->cache['scale'][$finalgrade]);
         }
 
         $tableheaders = [
             get_string('userpic'),
             get_string('fullnameuser'),
-            format_string($this->hotquestion->instance->questionlabel).' ('.($this->hotquestion->instance->postmaxgrade).')',
-            get_string('teacherpriority', 'hotquestion').' ('.($this->hotquestion->instance->factorpriority).'%)',
-            get_string('heatgiven', 'hotquestion').' ('.($this->hotquestion->instance->factorheat).'%)',
-            get_string('heatreceived', 'hotquestion').' ('.($this->hotquestion->instance->factorvote).'%)',
-            get_string('grading', 'hotquestion' ),
-            get_string('finalgrade', 'hotquestion').' ('.($finalgrade).')',
+            format_string($this->hotquestion->instance->questionlabel) . ' (' . ($this->hotquestion->instance->postmaxgrade) . ')',
+            get_string('teacherpriority', 'hotquestion') . ' (' . ($this->hotquestion->instance->factorpriority) . '%)',
+            get_string('heatgiven', 'hotquestion') . ' (' . ($this->hotquestion->instance->factorheat) . '%)',
+            get_string('heatreceived', 'hotquestion') . ' (' . ($this->hotquestion->instance->factorvote) . '%)',
+            get_string('grading', 'hotquestion'),
+            get_string('finalgrade', 'hotquestion') . ' (' . ($finalgrade) . ')',
         ];
 
         $context = $this->get_context();
@@ -196,10 +201,10 @@ class viewgrades extends table_sql {
             $namefields = user_picture::fields('u', null, 'userid');
         } else {
             $userfieldsapi = \core_user\fields::for_userpic();
-            $namefields = $userfieldsapi->get_sql('u', false, '', 'userid', false)->selects;;
+            $namefields = $userfieldsapi->get_sql('u', false, '', 'userid', false)->selects;
         }
 
-        $fields = 'u.id, u.username, u.idnumber, '.$namefields;
+        $fields = 'u.id, u.username, u.idnumber, ' . $namefields;
         $fields .= ', gg.rawgrade, gg.finalgrade, g.rawrating  ';
         $fields .= ', (SELECT COUNT(qq.id)
                          FROM {hotquestion_questions} qq
@@ -221,7 +226,7 @@ class viewgrades extends table_sql {
                          JOIN {hotquestion_votes} v ON v.question = qq.id
                         WHERE qq.userid = u.id AND qq.hotquestion = h.id AND v.voter <> u.id ) AS heatreceived';
 
-        list($esql, $params) = get_enrolled_sql($context, 'mod/hotquestion:view', $group, true);
+        [$esql, $params] = get_enrolled_sql($context, 'mod/hotquestion:view', $group, true);
         $from = " {user} u
                  JOIN {hotquestion} h ON h.id = :instance
             LEFT JOIN {hotquestion_grades} g ON g.hotquestion = h.id AND g.userid = u.id
@@ -278,8 +283,10 @@ class viewgrades extends table_sql {
             if ($this->is_downloading()) {
                 $printval = s($printval);
             }
+
             return trim($printval);
         }
+
         return parent::other_cols($column, $row);
     }
 
@@ -356,8 +363,9 @@ class viewgrades extends table_sql {
         if ($this->is_downloading()) {
             return $rating;
         }
+
         if ($rating) {
-            $rating .= '&nbsp;/&nbsp;'.$this->hotquestion->instance->postmaxgrade;
+            $rating .= '&nbsp;/&nbsp;' . $this->hotquestion->instance->postmaxgrade;
         } else {
             $rating = '-';
         }
@@ -376,6 +384,7 @@ class viewgrades extends table_sql {
         if ($this->is_downloading()) {
             return format_float($row->finalgrade, $item->get_decimals());
         }
+
         return $this->display_grade($row->finalgrade);
     }
 
@@ -386,18 +395,18 @@ class viewgrades extends table_sql {
      * @param bool $useinitialsbar do you want to use the initials bar. Bar
      * will only be used if there is a fullname column defined for the table.
      */
-    public function query_db($pagesize, $useinitialsbar=true) {
+    public function query_db($pagesize, $useinitialsbar = true) {
         global $DB;
         $this->totalrows = $grandtotal = $this->get_total_users_count();
         if (!$this->is_downloading()) {
             $this->initialbars($useinitialsbar);
 
-            list($wsql, $wparams) = $this->get_sql_where();
+            [$wsql, $wparams] = $this->get_sql_where();
             if ($wsql) {
-                $this->countsql .= ' AND '.$wsql;
+                $this->countsql .= ' AND ' . $wsql;
                 $this->countparams = array_merge($this->countparams, $wparams);
 
-                $this->sql->where .= ' AND '.$wsql;
+                $this->sql->where .= ' AND ' . $wsql;
                 $this->sql->params = array_merge($this->sql->params, $wparams);
 
                 $this->totalrows = $DB->count_records_sql($this->countsql, $this->countparams);
@@ -411,6 +420,7 @@ class viewgrades extends table_sql {
         if ($sort = $this->get_sql_sort()) {
             $sort = "ORDER BY $sort";
         }
+
         $sql = "SELECT
                 {$this->sql->fields}
                 FROM {$this->sql->from}
@@ -434,6 +444,7 @@ class viewgrades extends table_sql {
         if ($this->grandtotal === null) {
             $this->grandtotal = $DB->count_records_sql($this->countsql, $this->countparams);
         }
+
         return $this->grandtotal;
     }
 
@@ -464,17 +475,23 @@ class viewgrades extends table_sql {
         }
 
         echo $OUTPUT->heading(get_string('viewgrades', 'hotquestion'), 4);
-        $this->out($this->showall ? $grandtotal : HOTQUESTION_DEFAULT_PAGE_COUNT,
-                $grandtotal > HOTQUESTION_DEFAULT_PAGE_COUNT);
+        $this->out(
+            $this->showall ? $grandtotal : HOTQUESTION_DEFAULT_PAGE_COUNT,
+            $grandtotal > HOTQUESTION_DEFAULT_PAGE_COUNT
+        );
 
         // Toggle 'Show all' link.
         if ($this->totalrows > HOTQUESTION_DEFAULT_PAGE_COUNT) {
             if (!$this->use_pages) {
-                echo html_writer::div(html_writer::link(new moodle_url($this->baseurl, [$this->showallparamname => 0]),
-                        get_string('showperpage', '', HOTQUESTION_DEFAULT_PAGE_COUNT)), 'showall');
+                echo html_writer::div(html_writer::link(
+                    new moodle_url($this->baseurl, [$this->showallparamname => 0]),
+                    get_string('showperpage', '', HOTQUESTION_DEFAULT_PAGE_COUNT)
+                ), 'showall');
             } else {
-                echo html_writer::div(html_writer::link(new moodle_url($this->baseurl, [$this->showallparamname => 1]),
-                        get_string('showall', '', $this->totalrows)), 'showall');
+                echo html_writer::div(html_writer::link(
+                    new moodle_url($this->baseurl, [$this->showallparamname => 1]),
+                    get_string('showall', '', $this->totalrows)
+                ), 'showall');
             }
         }
     }
@@ -504,6 +521,7 @@ class viewgrades extends table_sql {
         if ($this->rawdata instanceof \Traversable && !$this->rawdata->valid()) {
             return;
         }
+
         if (!$this->rawdata) {
             return;
         }
@@ -531,6 +549,7 @@ class viewgrades extends table_sql {
                 }
             }
         }
+
         $this->build_table_chunk($chunk, $columnsgroups);
     }
 
@@ -558,8 +577,9 @@ class viewgrades extends table_sql {
                     "ON v{$nr}.completed = c.id AND v{$nr}.item = :itemid{$nr}";
                 $params["itemid{$nr}"] = $item->id;
             }
-            list($idsql, $idparams) = $DB->get_in_or_equal(array_keys($rows), SQL_PARAMS_NAMED);
-            $sql = "SELECT $fields FROM $from WHERE c.id ".$idsql;
+
+            [$idsql, $idparams] = $DB->get_in_or_equal(array_keys($rows), SQL_PARAMS_NAMED);
+            $sql = "SELECT $fields FROM $from WHERE c.id " . $idsql;
             $results = $DB->get_records_sql($sql, $params + $idparams);
             foreach ($results as $result) {
                 foreach ($result as $key => $value) {
@@ -584,8 +604,12 @@ class viewgrades extends table_sql {
         global $OUTPUT;
 
         if ($this->is_downloadable() && !$this->is_downloading()) {
-            return $OUTPUT->download_dataformat_selector(get_string('downloadas', 'table'),
-                    $this->baseurl->out_omit_querystring(), $this->downloadparamname, $this->baseurl->params());
+            return $OUTPUT->download_dataformat_selector(
+                get_string('downloadas', 'table'),
+                $this->baseurl->out_omit_querystring(),
+                $this->downloadparamname,
+                $this->baseurl->params()
+            );
                     // Might see about adding a return button before or at the end of this return line of code.
         } else {
             return '';
@@ -599,6 +623,7 @@ class viewgrades extends table_sql {
         if ($this->gradeitem) {
             return $this->gradeitem;
         }
+
         $params = [
             'itemtype' => 'mod',
             'itemmodule' => 'hotquestion',
@@ -610,6 +635,7 @@ class viewgrades extends table_sql {
         if (!$this->gradeitem) {
             throw new coding_exception(get_string('improperuseviewgradesclass', 'hotquestion'));
         }
+
         return $this->gradeitem;
     }
 
@@ -639,6 +665,7 @@ class viewgrades extends table_sql {
                     $o .= '&nbsp;/&nbsp;' . format_float($this->hotquestion->instance->grade, $item->get_decimals());
                 }
             }
+
             return $o;
         } else {
             // If using scale and the Scale is missing go here.
@@ -650,6 +677,7 @@ class viewgrades extends table_sql {
                     return $o;
                 }
             }
+
             // Create a scaleid based on users current grade.
             $scaleid = (int)$grade;
             // If it is there, pick the users grade from the scale using the scaleid.
@@ -657,6 +685,7 @@ class viewgrades extends table_sql {
                 $o .= $this->cache['scale'][$scaleid];
                 return $o;
             }
+
             $o .= '-';
             return $o;
         }

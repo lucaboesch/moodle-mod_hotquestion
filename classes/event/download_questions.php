@@ -34,7 +34,6 @@ defined('MOODLE_INTERNAL') || die(); // @codingStandardsIgnoreLine
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class download_questions extends \core\event\base {
-
     /**
      * Init method.
      */
@@ -66,6 +65,7 @@ class download_questions extends \core\event\base {
             $txtforlog = "The teacher/manager with id '$this->userid' has downloaded the questions for the hotquestion
                          activity with the course module id '$this->contextinstanceid'.";
         }
+
         return $txtforlog;
     }
 

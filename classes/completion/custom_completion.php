@@ -31,7 +31,6 @@ use core_completion\activity_custom_completion;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class custom_completion extends activity_custom_completion {
-
     /**
      * Fetches the completion state for a given completion rule.
      *
@@ -72,29 +71,38 @@ class custom_completion extends activity_custom_completion {
                             AND hqq.id = :hotquestionid";
 
         if ($rule == 'completionpost') {
-            if ($status = $hotquestion->completionpost <=
-                $DB->get_field_sql($questionpostsql, $questioncountparams)) {
+            if (
+                $status = $hotquestion->completionpost <=
+                $DB->get_field_sql($questionpostsql, $questioncountparams)
+            ) {
                 $status = $hotquestion->completionpost = 1;
             } else {
                 $status = $hotquestion->completionpost = 0;
             }
         } else if ($rule == 'completionvote') {
-            if ($status = $hotquestion->completionvote <=
-                $DB->get_field_sql($questionvotesql, $questionvoteparams)) {
+            if (
+                $status = $hotquestion->completionvote <=
+                $DB->get_field_sql($questionvotesql, $questionvoteparams)
+            ) {
                 $status = $hotquestion->completionvote = 1;
             } else {
                 $status = $hotquestion->completionvote = 0;
             }
         } else if ($rule == 'completionpass') {
-            if ($status = $hotquestion->completionpass <=
-                $DB->get_field_sql($questioncountsql.
+            if (
+                $status = $hotquestion->completionpass <=
+                $DB->get_field_sql(
+                    $questioncountsql .
                     ' AND hqg.userid = $userid AND hqg.rawrating >= hqgrade',
-                    $questioncountparams)) {
+                    $questioncountparams
+                )
+            ) {
                 $status = $hotquestion->completionpass = 1;
             } else {
                 $status = $hotquestion->completionpass = 0;
             }
         }
+
         return $status ? COMPLETION_COMPLETE : COMPLETION_INCOMPLETE;
     }
 

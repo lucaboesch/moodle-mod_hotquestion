@@ -52,6 +52,7 @@ $baseurl = new moodle_url('/mod/hotquestion/grades.php', ['id' => $hq->cm->id]);
 if ($group > 0) {
     $baseurl->param('group', $group);
 }
+
 $PAGE->set_url($baseurl);
 $PAGE->set_title($hq->instance->name);
 $PAGE->set_heading($hq->course->shortname);
@@ -64,6 +65,7 @@ if ($entriesmanager = has_capability('mod/hotquestion:rate', $context)) {
 } else {
     $userid = $USER->id;
 }
+
 // 20220515 Commented out next line so that an individual can see only their grade.
 // $userid = 0;
 

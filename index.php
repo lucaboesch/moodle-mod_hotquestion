@@ -46,9 +46,14 @@ echo $OUTPUT->header();
 echo $OUTPUT->heading($strhotquestions);
 
 if (! $hotquestions = get_all_instances_in_course("hotquestion", $course)) {
-    notice(get_string('thereareno', 'moodle',
-    get_string("modulenameplural", "hotquestion")),
-    "../../course/view.php?id=$course->id");
+    notice(
+        get_string(
+            'thereareno',
+            'moodle',
+            get_string("modulenameplural", "hotquestion")
+        ),
+        "../../course/view.php?id=$course->id"
+    );
     die;
 }
 
@@ -68,7 +73,7 @@ $table->head = [];
 $table->align = [];
 
 if ($usesections) {
-    $table->head[] = get_string('sectionname', 'format_'.$course->format);
+    $table->head[] = get_string('sectionname', 'format_' . $course->format);
     $table->align[] = 'left';
 }
 
@@ -80,7 +85,6 @@ $table->align[] = 'left';
 $currentsection = '';
 $i = 0;
 foreach ($hotquestions as $hotquestion) {
-
     $context = context_module::instance($hotquestion->coursemodule);
     $entriesmanager = has_capability('mod/hotquestion:view', $context);
 
@@ -92,8 +96,10 @@ foreach ($hotquestions as $hotquestion) {
             $table->data[$i] = 'hr';
             $i++;
         }
+
         $currentsection = $hotquestion->section;
     }
+
     // List topic/section name.
     if ($usesections) {
         $table->data[$i][] = $printsection;
@@ -103,15 +109,16 @@ foreach ($hotquestions as $hotquestion) {
     if (!$hotquestion->visible) {
         // Show dimmed link with slashed eye, if the activity is hidden.
         $table->data[$i][] = "<a class=\"dimmed\" href=\"view.php?id=$hotquestion->coursemodule\">"
-                             .format_string($hotquestion->name, true)
-                             .' <i class="icon fa fa-eye-slash fa-fw " aria-hidden="true"></a>';
+                             . format_string($hotquestion->name, true)
+                             . ' <i class="icon fa fa-eye-slash fa-fw " aria-hidden="true"></a>';
     } else {
         // Show normal link if the activity is visible.
-        $table->data[$i][] = "<a href=\"view.php?id=$hotquestion->coursemodule\">".format_string($hotquestion->name, true)."</a>";
+        $table->data[$i][] = "<a href=\"view.php?id=$hotquestion->coursemodule\">" .
+            format_string($hotquestion->name, true) . "</a>";
     }
 
     // Description of the Hot Question activity.
-    $table->data[$i][] = format_text($hotquestion->intro,  $hotquestion->introformat);
+    $table->data[$i][] = format_text($hotquestion->intro, $hotquestion->introformat);
 
     // Questions in current round info.
     if ($entriesmanager) {
@@ -129,17 +136,19 @@ foreach ($hotquestions as $hotquestion) {
                 }
             }
         }
+
         // Go count the users and questions in the current round.
         $entrycount = results::hotquestion_count_entries($hotquestion, groups_get_all_groups($course->id, $USER->id));
 
         // Extract the number of users and questions into the participation column.
         foreach ($entrycount as $ec) {
             $table->data[$i][] = "<a href=\"view.php?id=$hotquestion->coursemodule\">"
-                                 .get_string("viewallentries", "hotquestion", $ec)."</a>";
+                                 . get_string("viewallentries", "hotquestion", $ec) . "</a>";
         }
     } else if (!empty($managersomewhere)) {
         $table->data[$i][] = "";
     }
+
     $i++;
 }
 

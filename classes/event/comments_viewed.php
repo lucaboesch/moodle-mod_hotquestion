@@ -34,7 +34,6 @@ defined('MOODLE_INTERNAL') || die(); // @codingStandardsIgnoreLine
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class comments_viewed extends \core\event\comments_viewed {
-
     /**
      * Init method.
      *
@@ -51,7 +50,7 @@ class comments_viewed extends \core\event\comments_viewed {
      * @return string
      */
     public function get_description() {
-        return "The user with id '$this->userid' viewed a comment with id '{$this->other['comment']}' in the course with id ".
+        return "The user with id '$this->userid' viewed a comment with id '{$this->other['comment']}' in the course with id " .
             "'{$this->other['comment']}' for the hot question activity with course module id '$this->contextinstanceid'.";
     }
 

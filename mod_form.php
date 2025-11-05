@@ -28,7 +28,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/course/moodleform_mod.php');
+require_once($CFG->dirroot . '/course/moodleform_mod.php');
 
 use core_grades\component_gradeitems;
 
@@ -41,7 +41,6 @@ use core_grades\component_gradeitems;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mod_hotquestion_mod_form extends moodleform_mod {
-
     /**
      * Define the Hot Question mod_form used when editing a Hot Question activity.
      *
@@ -63,6 +62,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         } else {
             $mform->setType('name', PARAM_CLEANHTML);
         }
+
         $mform->addRule('name', null, 'required', null, 'client');
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
 
@@ -86,6 +86,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         } else {
             $mform->setType('submitdirections', PARAM_CLEANHTML);
         }
+
         $mform->setDefault('submitdirections', $hotquestionconfig->submitinstructions);
         $mform->addHelpButton('submitdirections', 'inputquestion', 'hotquestion');
         $mform->addRule('submitdirections', null, 'required', null, 'client');
@@ -98,6 +99,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         } else {
             $mform->setType('questionlabel', PARAM_CLEANHTML);
         }
+
         $mform->setDefault('questionlabel', $hotquestionconfig->questionlabel);
         $mform->addHelpButton('questionlabel', 'inputquestionlabel', 'hotquestion');
         $mform->addRule('questionlabel', null, 'required', null, 'client');
@@ -120,6 +122,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         } else {
             $mform->setType('teacherprioritylabel', PARAM_CLEANHTML);
         }
+
         $mform->setDefault('teacherprioritylabel', $hotquestionconfig->teacherprioritylabel);
         $mform->addHelpButton('teacherprioritylabel', 'inputteacherprioritylabel', 'hotquestion');
         $mform->addRule('teacherprioritylabel', null, 'required', null, 'client');
@@ -137,6 +140,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         } else {
             $mform->setType('heatlabel', PARAM_CLEANHTML);
         }
+
         $mform->setDefault('heatlabel', $hotquestionconfig->heatlabel);
         $mform->addHelpButton('heatlabel', 'inputheatlabel', 'hotquestion');
         $mform->addRule('heatlabel', null, 'required', null, 'client');
@@ -148,6 +152,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         for ($i = 0; $i <= 10; $i++) {
             $tlimit[] = $i;
         }
+
         $mform->addElement('select', 'heatlimit', get_string('heatlimit', 'hotquestion'), $tlimit);
         $mform->addHelpButton('heatlimit', 'heatlimit', 'hotquestion');
         $mform->setDefault('heatlimit', $hotquestionconfig->heatlimit);
@@ -174,6 +179,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         } else {
             $mform->setType('approvallabel', PARAM_CLEANHTML);
         }
+
         $mform->setDefault('approvallabel', $hotquestionconfig->approvallabel);
         $mform->addHelpButton('approvallabel', 'inputapprovallabel', 'hotquestion');
         $mform->addRule('approvallabel', null, 'required', null, 'client');
@@ -186,6 +192,7 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         } else {
             $mform->setType('removelabel', PARAM_CLEANHTML);
         }
+
         $mform->setDefault('removelabel', $hotquestionconfig->removelabel);
         $mform->addHelpButton('removelabel', 'inputapprovallabel', 'hotquestion');
         $mform->addRule('removelabel', null, 'required', null, 'client');
@@ -195,24 +202,30 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         if ($hotquestionconfig->allowcomments) {
             $mform->addElement('selectyesno', 'comments', get_string('allowcomments', 'hotquestion'));
             $mform->addHelpButton('comments', 'allowcomments', 'hotquestion');
-            $mform->setDefault('comments',  $hotquestionconfig->allowcomments);
+            $mform->setDefault('comments', $hotquestionconfig->allowcomments);
         }
 
         // Availability.
         $mform->addElement('header', 'availabilityhdr', get_string('availability'));
 
-        $mform->addElement('date_time_selector', 'timeopen',
+        $mform->addElement(
+            'date_time_selector',
+            'timeopen',
             get_string('hotquestionopentime', 'hotquestion'),
             ['optional' => true, 'step' => 1]
         );
 
-        $mform->addElement('date_time_selector', 'timeclose',
+        $mform->addElement(
+            'date_time_selector',
+            'timeclose',
             get_string('hotquestionclosetime', 'hotquestion'),
             ['optional' => true, 'step' => 1]
         );
 
         // Contrib by Kemmotar83.
-        $mform->addElement('selectyesno', 'viewaftertimeclose',
+        $mform->addElement(
+            'selectyesno',
+            'viewaftertimeclose',
             get_string('viewaftertimeclose', 'hotquestion')
         );
         $mform->addHelpButton('viewaftertimeclose', 'viewaftertimeclose', 'hotquestion');
@@ -265,10 +278,11 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         $errors = parent::validation($data, $files);
 
         if (empty($data['timeclose']) && !empty($data['viewaftertimeclose'])) {
-            if ($data['timeclose'] < $data['viewaftertimeclose'] ) {
+            if ($data['timeclose'] < $data['viewaftertimeclose']) {
                 $errors['timeclose'] = get_string('viewaftertimeclosevalidation', 'hotquestion');
             }
         }
+
         return $errors;
     }
 
@@ -289,9 +303,9 @@ class mod_hotquestion_mod_form extends moodleform_mod {
             $suffix = $this->get_suffix();
         }
 
-        $completionpostgroup = 'completionpostgroup'.$suffix;
-        $completionpostenabled = 'completionpostenabled'.$suffix;
-        $completionpostel = 'completionpost'.$suffix;
+        $completionpostgroup = 'completionpostgroup' . $suffix;
+        $completionpostenabled = 'completionpostenabled' . $suffix;
+        $completionpostel = 'completionpost' . $suffix;
 
         $group = [];
         $group[] = $mform->createElement('checkbox', $completionpostenabled, '', get_string('completionpost', 'hotquestion'));
@@ -300,9 +314,9 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         $mform->addGroup($group, $completionpostgroup, get_string('completionpostgroup', 'hotquestion'), [' '], false);
         $mform->disabledIf($completionpostel, $completionpostenabled, 'notchecked');
 
-        $completionvotegroup = 'completionvotegroup'.$suffix;
-        $completionvoteenabled = 'completionvoteenabled'.$suffix;
-        $completionvoteel = 'completionvote'.$suffix;
+        $completionvotegroup = 'completionvotegroup' . $suffix;
+        $completionvoteenabled = 'completionvoteenabled' . $suffix;
+        $completionvoteel = 'completionvote' . $suffix;
 
         $group = [];
         $group[] = $mform->createElement('checkbox', $completionvoteenabled, '', get_string('completionvote', 'hotquestion'));
@@ -330,11 +344,11 @@ class mod_hotquestion_mod_form extends moodleform_mod {
             $suffix = $this->get_suffix();
         }
 
-        $completionpostenabled = 'completionpostenabled'.$suffix;
+        $completionpostenabled = 'completionpostenabled' . $suffix;
         $completionpostel = 'completionpost' . $suffix;
 
-        $completionvoteenabled = 'completionvoteenabled'.$suffix;
-        $completionvoteel = 'completionvote'.$suffix;
+        $completionvoteenabled = 'completionvoteenabled' . $suffix;
+        $completionvoteel = 'completionvote' . $suffix;
 
         return (!empty($data['completionpostenabled']) && $data['completionpost'] != 0) ||
             (!empty($data['completionvoteenabled']) && $data['completionvote'] != 0);
@@ -374,15 +388,16 @@ class mod_hotquestion_mod_form extends moodleform_mod {
         if (empty($defaultvalues['completionpost'])) {
             $defaultvalues['completionpost'] = 0;
         }
+
         $defaultvalues['completionvoteenabled'] =
             !empty($defaultvalues['completionvote']) ? 1 : 0;
         if (empty($defaultvalues['completionvote'])) {
             $defaultvalues['completionvote'] = 0;
         }
     }
-
 }
 
+// phpcs:disable PSR1.Classes.ClassDeclaration
 /**
  * Standard base class for hotquestion_form for typing and submitting a question.
  *
@@ -392,14 +407,13 @@ class mod_hotquestion_mod_form extends moodleform_mod {
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class hotquestion_form extends moodleform {
-
     /**
      * Define the Hot Question input form called from view.php.
      */
     public function definition() {
         global $CFG, $DB;
 
-        list($allowanonymous, $cm) = $this->_customdata;
+        [$allowanonymous, $cm] = $this->_customdata;
 
         $temp = $DB->get_record('hotquestion', ['id' => $cm->instance]);
 
@@ -408,12 +422,17 @@ class hotquestion_form extends moodleform {
         // 20210218 Changed using a text editor instead of textarea.
         // $mform->addElement('editor', 'text_editor', $temp->submitdirections, 'wrap="virtual" rows="5"');
         // Changed to format text which allows filters such as Generico, etc. to work.
-        $mform->addElement('editor', 'text_editor',
-                           format_text($temp->submitdirections,
-                           $format = FORMAT_MOODLE,
-                           $options = null,
-                           $courseiddonotuse = null),
-                           'wrap="virtual" rows="5"');
+        $mform->addElement(
+            'editor',
+            'text_editor',
+            format_text(
+                $temp->submitdirections,
+                $format = FORMAT_MOODLE,
+                $options = null,
+                $courseiddonotuse = null
+            ),
+            'wrap="virtual" rows="5"'
+        );
         $mform->setType('text_editor', PARAM_RAW);
 
         $mform->addElement('hidden', 'id', $cm->id, 'id="hotquestion_courseid"');
@@ -425,6 +444,7 @@ class hotquestion_form extends moodleform {
             $submitgroup[] = $mform->createElement('checkbox', 'anonymous', '', get_string('displayasanonymous', 'hotquestion'));
             $mform->setType('anonymous', PARAM_BOOL);
         }
+
         $mform->addGroup($submitgroup);
         $this->_form->disable_form_change_checker();
     }

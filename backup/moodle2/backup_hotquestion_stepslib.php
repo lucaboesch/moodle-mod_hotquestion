@@ -40,7 +40,6 @@ defined('MOODLE_INTERNAL') || die(); // @codingStandardsIgnoreLine
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_hotquestion_activity_structure_step extends backup_activity_structure_step {
-
     /**
      * Define the structure for the hotquestion activity.
      * @return void
@@ -51,7 +50,8 @@ class backup_hotquestion_activity_structure_step extends backup_activity_structu
         $userinfo = $this->get_setting_value('userinfo');
 
         // Define each element separated.
-        $hotquestion = new backup_nested_element('hotquestion',
+        $hotquestion = new backup_nested_element(
+            'hotquestion',
             [
                 'id',
             ],
@@ -93,7 +93,8 @@ class backup_hotquestion_activity_structure_step extends backup_activity_structu
         );
 
         $grades = new backup_nested_element('grades');
-        $grade = new backup_nested_element('grade',
+        $grade = new backup_nested_element(
+            'grade',
             [
                 'id',
             ],
@@ -105,7 +106,8 @@ class backup_hotquestion_activity_structure_step extends backup_activity_structu
         );
 
         $questions = new backup_nested_element('questions');
-        $question = new backup_nested_element('question',
+        $question = new backup_nested_element(
+            'question',
             [
                 'id',
             ],
@@ -121,7 +123,8 @@ class backup_hotquestion_activity_structure_step extends backup_activity_structu
         );
 
         $rounds = new backup_nested_element('rounds');
-        $round = new backup_nested_element('round',
+        $round = new backup_nested_element(
+            'round',
             [
                 'id',
             ],
@@ -132,7 +135,8 @@ class backup_hotquestion_activity_structure_step extends backup_activity_structu
         );
 
         $votes = new backup_nested_element('votes');
-        $vote = new backup_nested_element('vote',
+        $vote = new backup_nested_element(
+            'vote',
             [
                 'id',
             ],

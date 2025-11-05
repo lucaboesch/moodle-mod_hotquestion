@@ -49,9 +49,10 @@ defined('MOODLE_INTERNAL') || die(); // @codingStandardsIgnoreLine
  * @author     AL Rachels <drachels@drachels.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class provider implements \core_privacy\local\metadata\provider,
-                          \core_privacy\local\request\plugin\provider,
-                          \core_privacy\local\request\core_userlist_provider {
+class provider implements
+    \core_privacy\local\request\core_userlist_provider,
+    \core_privacy\local\metadata\provider,
+    \core_privacy\local\request\plugin\provider {
     /**
      * Get a description of the data stored by this plugin.
      *
@@ -107,6 +108,7 @@ class provider implements \core_privacy\local\metadata\provider,
         if (self::$modid === null) {
             self::$modid = $DB->get_field('modules', 'id', ['name' => 'hotquestion']);
         }
+
         return self::$modid;
     }
 
@@ -207,7 +209,6 @@ class provider implements \core_privacy\local\metadata\provider,
              WHERE ctx.id = :contextid
         ";
         $userlist->add_from_sql('userid', $sql, $params);
-
     }
     /**
      * Export personal data for the given approved_contextlist. User and context information is contained within the contextlist.
@@ -224,7 +225,7 @@ class provider implements \core_privacy\local\metadata\provider,
         }
 
         $user = $contextlist->get_user();
-        list($contextsql, $contextparams) = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
+        [$contextsql, $contextparams] = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
 
         // Export the votes.
         $sql = "SELECT cm.id AS cmid,
@@ -258,15 +259,18 @@ class provider implements \core_privacy\local\metadata\provider,
                 if ($itemdata) {
                     self::export_hqvote_data_for_user($itemdata, $lastcmid, $user);
                 }
+
                 $itemdata = [];
                 $lastcmid = $vote->cmid;
             }
+
             $itemdata[] = (object)[
                 'id' => $vote->id,
                 'question' => $vote->question,
                 'voter' => $vote->voter,
             ];
         }
+
         $votes->close();
         if ($itemdata) {
             self::export_hotquestion_data_for_user($itemdata, $lastcmid, $user);
@@ -297,6 +301,7 @@ class provider implements \core_privacy\local\metadata\provider,
                 if ($itemdata) {
                     self::export_hotquestion_data_for_user($itemdata, $lastcmid, $user);
                 }
+
                 $itemdata = [];
                 $lastcmid = $question->cmid;
             }
@@ -310,6 +315,7 @@ class provider implements \core_privacy\local\metadata\provider,
                 'tpriority' => $question->tpriority,
             ];
         }
+
         $questions->close();
         if ($itemdata) {
             self::export_hotquestion_data_for_user($itemdata, $lastcmid, $user);
@@ -317,7 +323,7 @@ class provider implements \core_privacy\local\metadata\provider,
 
         // Export grades.
         $user = $contextlist->get_user();
-        list($contextsql, $contextparams) = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
+        [$contextsql, $contextparams] = $DB->get_in_or_equal($contextlist->get_contextids(), SQL_PARAMS_NAMED);
 
         $sql = "SELECT hqg.id AS id,
                        cm.id AS cmid,
@@ -349,12 +355,16 @@ class provider implements \core_privacy\local\metadata\provider,
               'grade' => $record->rating,
               'time' => transform::datetime($record->timemodified),
             ];
-            writer::with_context($context)->export_data([get_string('privacy:metadata:hotquestion_grades:path',
-                'mod_hotquestion')], $data);
+            writer::with_context($context)->export_data(
+                [get_string(
+                    'privacy:metadata:hotquestion_grades:path',
+                    'mod_hotquestion'
+                ),
+                ],
+                $data
+            );
         }
-
     }
-
 
     /**
      * Export the supplied personal vote data for a single hotquestion activity.
@@ -419,6 +429,7 @@ class provider implements \core_privacy\local\metadata\provider,
         if ($context->contextlevel != CONTEXT_MODULE) {
             return;
         }
+
         if (!$cm = get_coursemodule_from_id('hotquestion', $context->instanceid)) {
             return;
         }
@@ -448,12 +459,14 @@ class provider implements \core_privacy\local\metadata\provider,
             if ($context->contextlevel != CONTEXT_MODULE) {
                 continue;
             }
+
             if (!$cm = get_coursemodule_from_id('hotquestion', $context->instanceid)) {
                 continue;
             }
+
             $itemids = $DB->get_fieldset_select('hotquestion_questions', 'id', 'hotquestion = ?', [$cm->instance]);
             if ($itemids) {
-                list($isql, $params) = $DB->get_in_or_equal($itemids, SQL_PARAMS_NAMED);
+                [$isql, $params] = $DB->get_in_or_equal($itemids, SQL_PARAMS_NAMED);
                 $params['userid'] = $userid;
                 $DB->delete_records_select('hotquestion_votes', "id $isql AND voter = :userid", $params);
                 $DB->delete_records_select('hotquestion_grades', "id $isql AND userid = :userid", $params);
@@ -474,19 +487,21 @@ class provider implements \core_privacy\local\metadata\provider,
         if (!is_a($context, \context_module::class)) {
             return;
         }
+
         $modid = self::get_modid();
         if (!$modid) {
             return; // HotQuestion module not installed.
         }
+
         if (!$cm = get_coursemodule_from_id('hotquestion', $context->instanceid)) {
             return;
         }
 
         // Prepare SQL to gather all completed IDs.
         $itemids = $DB->get_fieldset_select('hotquestion_questions', 'id', 'hotquestion = ?', [$cm->instance]);
-        list($itsql, $itparams) = $DB->get_in_or_equal($itemids, SQL_PARAMS_NAMED);
+        [$itsql, $itparams] = $DB->get_in_or_equal($itemids, SQL_PARAMS_NAMED);
         $userids = $userlist->get_userids();
-        list($insql, $inparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+        [$insql, $inparams] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
 
         // Delete user-created personal hotquestion items.
         $DB->delete_records_select(
@@ -503,7 +518,8 @@ class provider implements \core_privacy\local\metadata\provider,
         );
 
         // Delete hot questions grades.
-        $DB->delete_records_select('hotquestion_grades',
+        $DB->delete_records_select(
+            'hotquestion_grades',
             "userid $insql AND hotquestion $itsql",
             array_merge($inparams, $itparams)
         );

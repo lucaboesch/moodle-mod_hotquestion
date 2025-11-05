@@ -51,6 +51,6 @@ class comment_deleted extends \core\event\comment_deleted {
     public function get_description() {
         return "The user with id '$this->userid' deleted the comment with id '
                .$this->objectid' from the hotquestion activity with "
-               ."course module id '$this->contextinstanceid'.";
+               . "course module id '$this->contextinstanceid'.";
     }
 }
