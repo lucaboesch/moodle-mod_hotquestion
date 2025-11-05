@@ -47,7 +47,6 @@ use mod_hotquestion\event\add_question;
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class results {
-
     /**
      * Update the calendar entries for this hotquestion activity.
      *
@@ -59,7 +58,7 @@ class results {
     public static function hotquestion_update_calendar(stdClass $hotquestion, $cmid) {
         global $DB, $CFG;
 
-        require_once($CFG->dirroot.'/calendar/lib.php');
+        require_once($CFG->dirroot . '/calendar/lib.php');
 
         // Hotquestion start calendar events.
         $event = new stdClass();
@@ -68,13 +67,18 @@ class results {
         if ($CFG->branch > 32) {
             $event->type = empty($hotquestion->timeclose) ? CALENDAR_EVENT_TYPE_ACTION : CALENDAR_EVENT_TYPE_STANDARD;
         }
-        if ($event->id = $DB->get_field('event', 'id',
-            [
+
+        if (
+            $event->id = $DB->get_field(
+                'event',
+                'id',
+                [
                 'modulename' => 'hotquestion',
                 'instance' => $hotquestion->id,
                 'eventtype' => $event->eventtype,
                 ]
-            )) {
+            )
+        ) {
             if ((!empty($hotquestion->timeopen)) && ($hotquestion->timeopen > 0)) {
                 // Calendar event exists so update it.
                 $event->name = get_string('calendarstart', 'hotquestion', $hotquestion->name);
@@ -115,14 +119,19 @@ class results {
         if ($CFG->branch > 32) {
             $event->type = CALENDAR_EVENT_TYPE_ACTION;
         }
+
         $event->eventtype = HOTQUESTION_EVENT_TYPE_CLOSE;
-        if ($event->id = $DB->get_field('event', 'id',
-            [
+        if (
+            $event->id = $DB->get_field(
+                'event',
+                'id',
+                [
                 'modulename' => 'hotquestion',
                 'instance' => $hotquestion->id,
                 'eventtype' => $event->eventtype,
-            ]
-        )) {
+                ]
+            )
+        ) {
             if ((!empty($hotquestion->timeclose)) && ($hotquestion->timeclose > 0)) {
                 // Calendar event exists so update it.
                 $event->name = get_string('calendarend', 'hotquestion', $hotquestion->name);
@@ -199,7 +208,6 @@ class results {
 
         // If user is in a group, how many users and questions in each Hot Question activity current round?
         if ($groupid && ($groupmode > '0')) {
-
             // Extract each group id from $groupid and process based on whether viewer is a member of the group.
             // Show user and question counts only if a member of the current group.
             foreach ($groupid as $gid) {
@@ -218,9 +226,7 @@ class results {
                 $params = ['hqid' => $hotquestion->id] + ['gidid' => $gid->id];
                 $hotquestions = $DB->get_records_sql($sql, $params);
             }
-
         } else if (!$groupid && ($groupmode > '0')) {
-
             // Check all the entries from the whole course.
             // If not currently a group member, but group mode is set for separate groups or visible groups,
             // see if this user has posted anyway, posted before mode was changed or posted before removal from a group.
@@ -239,9 +245,7 @@ class results {
             $params = [];
             $params = ['hqid' => $hotquestion->id] + ['userid' => $USER->id];
             $hotquestions = $DB->get_records_sql($sql, $params);
-
         } else {
-
             // Check all the users and entries from the whole course.
             $sql = "SELECT COUNT(DISTINCT hq.userid) AS ucount, COUNT(DISTINCT hq.content) AS qcount FROM {hotquestion_questions} hq
                       JOIN {user} u ON u.id = hq.userid
@@ -259,6 +263,7 @@ class results {
         if (!$hotquestions) {
             return 0;
         }
+
         $canadd = get_users_by_capability($context, 'mod/hotquestion:ask', 'u.id');
         $entriesmanager = get_users_by_capability($context, 'mod/hotquestion:manageentries', 'u.id');
         // If not enrolled or not an admin, teacher, or manager, then return nothing.
@@ -281,13 +286,16 @@ class results {
         // 20210313 Not in use yet. Part of future development.
         global $DB;
 
-        if ($count = $DB->count_records('comments',
-            [
+        if (
+            $count = $DB->count_records(
+                'comments',
+                [
                 'itemid' => $question->id,
                 'commentarea' => 'hotquestion_questions',
                 'contextid' => $cm->id,
-            ]
-        )) {
+                ]
+            )
+        ) {
             return $count;
         } else {
             return 0;
@@ -322,6 +330,7 @@ class results {
         } else {
             $html = html_writer::tag('div', get_string("nocommentuntilapproved", "hotquestion"));
         }
+
         return $html;
     }
 
@@ -393,6 +402,7 @@ class results {
             // If approval is required, then mark as not approved so only teachers can see it.
             $newentry->approved = 0;
         }
+
         $context = context_module::instance($hq->cm->id);
         // If marked anonymous and anonymous is allowed then change from actual userid to guest.
         if (isset($fromform->anonymous) && $fromform->anonymous && $fromform->instance->anonymouspost) {
@@ -400,6 +410,7 @@ class results {
             // Assume this user is guest.
             $newentry->userid = $CFG->siteguest;
         }
+
         if (!empty($newentry->content)) {
             // If there is some actual content, then create a new record.
             $DB->insert_record('hotquestion_questions', $newentry);

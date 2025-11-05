@@ -74,15 +74,15 @@ if (!$cw = $DB->get_record("course_sections", ["id" => $cm->section])) {
 }
 
 // 20230519 Get a user preference, set to zero if it does not already exist.
-$oldvispreference = get_user_preferences('hotquestion_seeunapproved'.$hotquestion->id, 0);
+$oldvispreference = get_user_preferences('hotquestion_seeunapproved' . $hotquestion->id, 0);
 $vispreference = optional_param('vispreference', $oldvispreference, PARAM_INT);
 
 // 20230517 Added selector for visibility view. 20230531 First time access will default to,
 // Preference not set, and show the list of questions anyway.
 if (!($oldvispreference)) {
-    set_user_preference('hotquestion_seeunapproved'.$hotquestion->id, 1);
+    set_user_preference('hotquestion_seeunapproved' . $hotquestion->id, 1);
 } else {
-    set_user_preference('hotquestion_seeunapproved'.$hotquestion->id, $vispreference);
+    set_user_preference('hotquestion_seeunapproved' . $hotquestion->id, $vispreference);
 }
 
 // Trigger module viewed event.
@@ -143,17 +143,20 @@ if ($canask) {
         } else {
             $newentry->anonymous = 0;
         }
+
         $newentry->approved = $hq->instance->approval;
         $newentry->tpriority = 0;
         $newentry->submitbutton = $fromform->submitbutton;
 
         // From this point, need to process the question and save it.
         if (!results::add_new_question($newentry, $hq)) { // Returns 1 if valid question submitted.
-            redirect('view.php?id='.$hq->cm->id, get_string('invalidquestion', 'hotquestion'));
+            redirect('view.php?id=' . $hq->cm->id, get_string('invalidquestion', 'hotquestion'));
         }
+
         if (!$ajax) {
-            redirect('view.php?id='.$hq->cm->id, get_string('questionsubmitted', 'hotquestion'));
+            redirect('view.php?id=' . $hq->cm->id, get_string('questionsubmitted', 'hotquestion'));
         }
+
         die;
     }
 }
@@ -163,21 +166,22 @@ if (!empty($action)) {
     switch ($action) {
         case 'tpriority':
             if (has_capability('mod/hotquestion:rate', $context)) {
-                $u = required_param('u',  PARAM_INT);  // Flag to change priority up or down.
-                $q = required_param('q',  PARAM_INT);  // Question id to change priority.
+                $u = required_param('u', PARAM_INT);  // Flag to change priority up or down.
+                $q = required_param('q', PARAM_INT);  // Question id to change priority.
                 $hq->tpriority_change($u, $q);
-                redirect('view.php?id='.$hq->cm->id, null); // Needed to prevent priority change on page reload.
+                redirect('view.php?id=' . $hq->cm->id, null); // Needed to prevent priority change on page reload.
             }
             break;
         case 'vote':
             if (has_capability('mod/hotquestion:vote', $context)) {
                 // 20230122 Prevent voting when closed.
-                if ((hqavailable::is_hotquestion_active($hq))
+                if (
+                    (hqavailable::is_hotquestion_active($hq))
                     || (has_capability('mod/hotquestion:rate', $context))
                     || ((!hqavailable::is_hotquestion_active($hq))
                         && !$hotquestion->viewaftertimeclose)
-                    ) {
-                    $q = required_param('q',  PARAM_INT);  // Question id to vote.
+                ) {
+                    $q = required_param('q', PARAM_INT);  // Question id to vote.
                     $hq->vote_on($q);
                 }
             }
@@ -185,12 +189,13 @@ if (!empty($action)) {
         case 'removevote':
             if (has_capability('mod/hotquestion:vote', $context)) {
                 // 20230122 Prevent vote remove when closed.
-                if ((hqavailable::is_hotquestion_active($hq))
+                if (
+                    (hqavailable::is_hotquestion_active($hq))
                     || (has_capability('mod/hotquestion:rate', $context))
                     || ((!hqavailable::is_hotquestion_active($hq))
                         && !$hotquestion->viewaftertimeclose)
-                    ) {
-                    $q = required_param('q',  PARAM_INT);  // Question id to vote.
+                ) {
+                    $q = required_param('q', PARAM_INT);  // Question id to vote.
                     $hq->remove_vote($q);
                 }
             }
@@ -199,23 +204,23 @@ if (!empty($action)) {
             if (has_capability('mod/hotquestion:rate', $context)) {
                 $hq->add_new_round();
                 // Added to make new empty round start without having to click the Reload icon.
-                redirect('view.php?id='.$hq->cm->id, get_string('newroundsuccess', 'hotquestion'));
+                redirect('view.php?id=' . $hq->cm->id, get_string('newroundsuccess', 'hotquestion'));
             }
             break;
         case 'removeround':
             if (has_capability('mod/hotquestion:manageentries', $context)) {
                 $hq->remove_round();
                 // Added to show round has been removed.
-                redirect('view.php?id='.$hq->cm->id, get_string('removedround', 'hotquestion'));
+                redirect('view.php?id=' . $hq->cm->id, get_string('removedround', 'hotquestion'));
             }
             break;
         case 'remove':
             if (has_capability('mod/hotquestion:manageentries', $context)) {
-                $q = required_param('q',  PARAM_INT);  // Question id to remove.
+                $q = required_param('q', PARAM_INT);  // Question id to remove.
                 // Call remove_question function in locallib.
                 $hq->remove_question($q);
                 // Need redirect that goes to the round where removing question.
-                redirect('view.php?id='.$hq->cm->id, get_string('questionremovesuccess', 'hotquestion'));
+                redirect('view.php?id=' . $hq->cm->id, get_string('questionremovesuccess', 'hotquestion'));
                 // Does work without it as it just defaults to current round.
             }
             break;
@@ -228,10 +233,10 @@ if (!empty($action)) {
             break;
         case 'approve':
             if (has_capability('mod/hotquestion:manageentries', $context) || has_capability('mod/hotquestion:rate', $context)) {
-                $q = required_param('q',  PARAM_INT);  // Question id to approve.
+                $q = required_param('q', PARAM_INT);  // Question id to approve.
                 // Call approve question function in locallib.
                 $hq->approve_question($q);
-                redirect('view.php?id='.$hq->cm->id, null); // Needed to prevent toggle on page reload.
+                redirect('view.php?id=' . $hq->cm->id, null); // Needed to prevent toggle on page reload.
             }
             break;
     }
@@ -250,25 +255,34 @@ if (!$ajax) {
     // Allow access at any time to manager, non-editing teacher and editing teacher but prevent access to students.
     // Check availability timeopen and timeclose. Added 10/2/16. Modified 20230120 to add viewaftertimeclose.
     // Modified 20230125 to create hqavailable class. This controls availability restrictions.
-    if (!(has_capability('mod/hotquestion:manage', $context)
+    if (
+        !(has_capability('mod/hotquestion:manage', $context)
         || has_capability('mod/hotquestion:rate', $context))
         && !hqavailable::is_hotquestion_active($hq)
-        ) {  // Availability restrictions.
-
+    ) {  // Availability restrictions.
         $inaccessible = '';
         if (hqavailable::is_hotquestion_ended($hq) && !$hotquestion->viewaftertimeclose) {
-            $inaccessible = $output->hotquestion_inaccessible(get_string('hotquestionclosed',
-                'hotquestion', userdate($hotquestion->timeclose)));
+            $inaccessible = $output->hotquestion_inaccessible(get_string(
+                'hotquestionclosed',
+                'hotquestion',
+                userdate($hotquestion->timeclose)
+            ));
         }
+
         if (hqavailable::is_hotquestion_yet_to_start($hq)) {
-            $inaccessible = $output->hotquestion_inaccessible(get_string('hotquestionopen',
-                'hotquestion', userdate($hotquestion->timeopen)));
+            $inaccessible = $output->hotquestion_inaccessible(get_string(
+                'hotquestionopen',
+                'hotquestion',
+                userdate($hotquestion->timeopen)
+            ));
         }
+
         if ($inaccessible !== '') {
             echo $inaccessible;
             echo $OUTPUT->footer();
             exit();
         }
+
         // Password code can go here. e.g. // } else if {.
     }
 
@@ -284,25 +298,26 @@ if (!$ajax) {
 
     // 20230123 Added open and close times, if set.
     if (($hotquestion->timeopen) && (($hotquestion->timeopen) > time())) {
-        echo '<strong>'.get_string('hotquestionopen', 'hotquestion', date("l, d M Y, G:i A", $hotquestion->timeopen)).
+        echo '<strong>' . get_string('hotquestionopen', 'hotquestion', date("l, d M Y, G:i A", $hotquestion->timeopen)) .
              '</strong><br>';
     } else if ($hotquestion->timeopen) {
-        echo '<strong>'.get_string('hotquestionopentime', 'hotquestion').
-             ':</strong> '.date("l, d M Y, G:i A", $hotquestion->timeopen).'<br>';
+        echo '<strong>' . get_string('hotquestionopentime', 'hotquestion') .
+             ':</strong> ' . date("l, d M Y, G:i A", $hotquestion->timeopen) . '<br>';
     }
+
     if (($hotquestion->timeclose) && (($hotquestion->timeclose) < time())) {
-        echo '<strong>'.get_string('hotquestionclosed', 'hotquestion', date("l, d M Y, G:i A", $hotquestion->timeclose)).
+        echo '<strong>' . get_string('hotquestionclosed', 'hotquestion', date("l, d M Y, G:i A", $hotquestion->timeclose)) .
              '</strong><br>';
     } else if ($hotquestion->timeclose) {
-        echo '<strong>'.get_string('hotquestionclosetime', 'hotquestion').
-             ':</strong> '.date("l, d M Y, G:i A", $hotquestion->timeclose).'<br>';
+        echo '<strong>' . get_string('hotquestionclosetime', 'hotquestion') .
+             ':</strong> ' . date("l, d M Y, G:i A", $hotquestion->timeclose) . '<br>';
     }
 
     // 20230522 Added a single row table to make both group and viewunapproved preference drop down menus work.
     echo '<table style="width:100%" class="table-reboot"><tr><td style="width:25%>';
     // Print group information (A drop down box will be displayed if the user
     // is a member of more than one group, or has access to all groups).
-    echo groups_print_activity_menu($cm, $CFG->wwwroot.'/mod/hotquestion/view.php?id='.$cm->id);
+    echo groups_print_activity_menu($cm, $CFG->wwwroot . '/mod/hotquestion/view.php?id=' . $cm->id);
     echo '</td>';
 
     // 20240209 I approval is not required, do not show the visibility preference slector.
@@ -316,22 +331,23 @@ if (!$ajax) {
             get_string('unapprovedquestionhide', 'hotquestion'),
         ];
         $htmlout = '';
-        $htmlout .= '&nbsp; &nbsp; &nbsp;'.get_string('unapprovedquestionvisibility', 'hotquestion')
-                     .' <select onchange="this.form.submit()" id="pref_visibility" class="custom-select" name="vispreference">';
+        $htmlout .= '&nbsp; &nbsp; &nbsp;' . get_string('unapprovedquestionvisibility', 'hotquestion')
+                     . ' <select onchange="this.form.submit()" id="pref_visibility" class="custom-select" name="vispreference">';
         // Get the ID and name of each preference in the DB.
         foreach ($listoptions as $akey => $aval) {
             // The first if is executed ONLY when the drop down menu is clicked to change the preference.
             if ($akey == $vispreference) {
                 // This part of the if is reached when going to setup with an
                 // preference already selected and it is the one already in use.
-                $htmlout .= '<option value="'.$akey.'" selected="true">'.$aval.'</option>';
+                $htmlout .= '<option value="' . $akey . '" selected="true">' . $aval . '</option>';
             } else {
                 // This part of the if is reached the most and its when a preference option
                 // is not the one currently selected in the dropdown list.
-                $htmlout .= '<option value="'.$akey.'">'.$aval.'</option>';
+                $htmlout .= '<option value="' . $akey . '">' . $aval . '</option>';
             }
         }
-        set_user_preference('hotquestion_seeunapproved'.$hotquestion->id, $vispreference);
+
+        set_user_preference('hotquestion_seeunapproved' . $hotquestion->id, $vispreference);
         // 20240209 Added visibility preference check here. Might want to try it at line 306 and save some work.
         echo $htmlout;
         // 20230522 Limit the form to this one row/cell of the table.
@@ -339,19 +355,21 @@ if (!$ajax) {
     } else {
         echo '<td>&nbsp; &nbsp; &nbsp;</td>';
     }
+
     // 20230519 This creates the URL link button for all HotQuestions in this course.
-    $url2 = '<a href="'.$CFG->wwwroot.'/mod/hotquestion/index.php?id='.$course->id
-        .'"class="btn btn-link">'
-        .get_string('viewallhotquestions', 'hotquestion', $hotquestion->name)
-        .'</a>';
-    echo '<td style="width:25%; text-align:right">'.$url2.'</td>';
+    $url2 = '<a href="' . $CFG->wwwroot . '/mod/hotquestion/index.php?id=' . $course->id
+        . '"class="btn btn-link">'
+        . get_string('viewallhotquestions', 'hotquestion', $hotquestion->name)
+        . '</a>';
+    echo '<td style="width:25%; text-align:right">' . $url2 . '</td>';
     echo '</tr></table>';
     // Print the textarea box for typing submissions in.
-    if ((has_capability('mod/hotquestion:manage', $context)
+    if (
+        (has_capability('mod/hotquestion:manage', $context)
         || has_capability('mod/hotquestion:rate', $context))
         || (has_capability('mod/hotquestion:ask', $context)
            && hqavailable::is_hotquestion_active($hq))
-        ) {
+    ) {
         $mform->display();
     }
 }
@@ -369,6 +387,7 @@ if (($entriesmanager || $canrate || $canask) && ($hotquestion->grade <> 0)) {
     $url = new moodle_url('grades.php', ['id' => $cm->id, 'group' => $group]);
     echo $output->single_button($url, get_string('viewgrades', 'hotquestion'));
 }
+
 // End contrib by ecastro ULPGC.
 echo $output->toolbar(has_capability('mod/hotquestion:rate', $context));
 echo $output->container_end();

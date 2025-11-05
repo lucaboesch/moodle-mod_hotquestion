@@ -35,7 +35,6 @@ require_once($CFG->dirroot . '/mod/hotquestion/backup/moodle2/backup_hotquestion
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class backup_hotquestion_activity_task extends backup_activity_task {
-
     /**
      * Define (add) particular settings this activity can have
      */
@@ -63,11 +62,11 @@ class backup_hotquestion_activity_task extends backup_activity_task {
         $base = preg_quote($CFG->wwwroot, "/");
 
         // Link to the list of hotquestions.
-        $search = "/(".$base."\/mod\/hotquestion\/index.php\?id\=)([0-9]+)/";
+        $search = "/(" . $base . "\/mod\/hotquestion\/index.php\?id\=)([0-9]+)/";
         $content = preg_replace($search, '$@HOTQUESTIONINDEX*$2@$', $content);
 
         // Link to hotquestion view by moduleid.
-        $search = "/(".$base."\/mod\/hotquestion\/view.php\?id\=)([0-9]+)/";
+        $search = "/(" . $base . "\/mod\/hotquestion\/view.php\?id\=)([0-9]+)/";
         $content = preg_replace($search, '$@HOTQUESTIONVIEWBYID*$2@$', $content);
 
         return $content;

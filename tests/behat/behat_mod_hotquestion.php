@@ -26,8 +26,6 @@
 
 require_once(__DIR__ . '/../../../../lib/behat/behat_base.php');
 
-use Behat\Behat\Context\Step\Given as Given, Behat\Behat\Context\Step\When as When, Behat\Gherkin\Node\TableNode as TableNode;
-
 /**
  * Steps definitions for mod_hotquestion.
  *
@@ -36,7 +34,6 @@ use Behat\Behat\Context\Step\Given as Given, Behat\Behat\Context\Step\When as Wh
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class behat_mod_hotquestion extends behat_base {
-
     /**
      * Convert page names to URLs for steps like 'When I am on the "[page name]" page'.
      *
@@ -70,11 +67,15 @@ class behat_mod_hotquestion extends behat_base {
     protected function resolve_page_instance_url(string $type, string $identifier): moodle_url {
         switch (strtolower($type)) {
             case 'view':
-                return new moodle_url('/mod/hotquestion/view.php',
-                    ['id' => $this->get_cm_by_hotquestion_name($identifier)->id]);
+                return new moodle_url(
+                    '/mod/hotquestion/view.php',
+                    ['id' => $this->get_cm_by_hotquestion_name($identifier)->id]
+                );
             case 'edit':
-                return new moodle_url('/course/modedit.php',
-                    ['update' => $this->get_cm_by_hotquestion_name($identifier)->id]);
+                return new moodle_url(
+                    '/course/modedit.php',
+                    ['update' => $this->get_cm_by_hotquestion_name($identifier)->id]
+                );
 
             default:
                 throw new Exception('Unrecognised hotquestion page type "' . $type . '."');
@@ -102,5 +103,4 @@ class behat_mod_hotquestion extends behat_base {
         $hotquestion = $this->get_hotquestion_by_name($name);
         return get_coursemodule_from_instance('hotquestion', $hotquestion->id, $hotquestion->course);
     }
-
 }

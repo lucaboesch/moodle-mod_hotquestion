@@ -30,14 +30,13 @@ defined('MOODLE_INTERNAL') || die(); // @codingStandardsIgnoreLine
  * @param int $oldversion The old version of the hotquestion module
  * @return bool
  */
-function xmldb_hotquestion_upgrade($oldversion=0) {
+function xmldb_hotquestion_upgrade($oldversion = 0) {
     global $CFG, $DB;
     $dbman = $DB->get_manager(); // Loads ddl manager and xmldb classes.
     $result = true;
 
     // 1.9.0 Upgrade line.
     if ($result && $oldversion < 2007040100) {
-
         // Define field course to be added to hotquestion.
         $table = new XMLDBTable('hotquestion');
         $field = new XMLDBField('course');
@@ -60,7 +59,6 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
     }
 
     if ($result && $oldversion < 2007040101) {
-
         // Define field timecreated to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
         $field = new xmldb_field('timecreated');
@@ -80,7 +78,7 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
 
     if ($result && $oldversion < 2007040200) {
         // Add some actions to get them properly displayed in the logs.
-        $rec = new stdClass;
+        $rec = new stdClass();
         $rec->module = 'hotquestion';
         $rec->action = 'add';
         $rec->mtable = 'hotquestion';
@@ -97,11 +95,18 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
 
     // 3.1.0 Upgrade start here.
     if ($oldversion < 2016100300) {
-
         // Define field submitdirections to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
-        $field = new xmldb_field('submitdirections', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL,
-            null, 'Submit your question here', 'introformat');
+        $field = new xmldb_field(
+            'submitdirections',
+            XMLDB_TYPE_CHAR,
+            '255',
+            null,
+            XMLDB_NOTNULL,
+            null,
+            'Submit your question here',
+            'introformat'
+        );
 
         // Conditionally launch add field submitdirections.
         if (!$dbman->field_exists($table, $field)) {
@@ -132,7 +137,6 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
 
     // 3.3.2 Upgrade start here.
     if ($oldversion < 2017122500) {
-
         // Define field approval to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
         $field = new xmldb_field('approval', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'anonymouspost');
@@ -165,12 +169,12 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
+
         // Hotquestion savepoint reached.
         upgrade_mod_savepoint(true, 2018010100, 'hotquestion');
     }
 
     if ($oldversion < 2019112100) {
-
         // Define field teacherpriorityvisibility to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
         $field = new xmldb_field('teacherpriorityvisibility', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '1', 'timeclose');
@@ -182,8 +186,16 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
 
         // Define field heatvisibility to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
-        $field = new xmldb_field('heatvisibility', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '1',
-            'teacherpriorityvisibility');
+        $field = new xmldb_field(
+            'heatvisibility',
+            XMLDB_TYPE_INTEGER,
+            '4',
+            null,
+            XMLDB_NOTNULL,
+            null,
+            '1',
+            'teacherpriorityvisibility'
+        );
 
         // Conditionally launch add field id.
         if (!$dbman->field_exists($table, $field)) {
@@ -193,8 +205,8 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
         // Hotquestion savepoint reached.
         upgrade_mod_savepoint(true, 2019112100, 'hotquestion');
     }
-    if ($oldversion < 2020051000) {
 
+    if ($oldversion < 2020051000) {
         // Define field questionlabel to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
         $field = new xmldb_field('questionlabel', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, 'Questions', 'timeclose');
@@ -206,8 +218,16 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
 
         // Define field teacherprioritylabel to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
-        $field = new xmldb_field('teacherprioritylabel', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL,
-            null, 'Priority', 'teacherpriorityvisibility');
+        $field = new xmldb_field(
+            'teacherprioritylabel',
+            XMLDB_TYPE_CHAR,
+            '20',
+            null,
+            XMLDB_NOTNULL,
+            null,
+            'Priority',
+            'teacherpriorityvisibility'
+        );
 
         // Conditionally launch add field id.
         if (!$dbman->field_exists($table, $field)) {
@@ -246,7 +266,6 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
     }
 
     if ($oldversion < 2020052800) {
-
         // Define field heatlimit to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
         $field = new xmldb_field('heatlimit', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'heatlabel');
@@ -261,7 +280,6 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
     }
 
     if ($oldversion < 2020121700) {
-
         // Define field authorhide to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
         $field = new xmldb_field('authorhide', XMLDB_TYPE_INTEGER, '4', null, XMLDB_NOTNULL, null, '0', 'anonymouspost');
@@ -276,7 +294,6 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
     }
 
     if ($oldversion < 2022041000) {
-
         // Define field scale to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
         $field = new xmldb_field('scale', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'removelabel');
@@ -306,14 +323,16 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
 
         // Define field assessedtimefinish to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
-        $field = new xmldb_field('assessedtimefinish'
-                                 , XMLDB_TYPE_INTEGER
-                                 , '10'
-                                 , null
-                                 , XMLDB_NOTNULL
-                                 , null
-                                 , '0'
-                                 , 'assessedtimestart');
+        $field = new xmldb_field(
+            'assessedtimefinish',
+            XMLDB_TYPE_INTEGER,
+            '10',
+            null,
+            XMLDB_NOTNULL,
+            null,
+            '0',
+            'assessedtimestart'
+        );
 
         // Conditionally launch add field assessedtimefinish.
         if (!$dbman->field_exists($table, $field)) {
@@ -341,6 +360,7 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
         // Hotquestion savepoint reached.
         upgrade_mod_savepoint(true, 2022041000, 'hotquestion');
     }
+
     // 4.1.0  Upgrade starts here.
     if ($oldversion < 2022070701) {
         // Define field assesstimestart to be added to hotquestion.
@@ -354,15 +374,22 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
 
         // Define field assesstimefinish to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
-        $field = new xmldb_field('assesstimefinish',
-                                 XMLDB_TYPE_INTEGER, '10', null,
-                                 XMLDB_NOTNULL, null, '0',
-                                 'assessedtimestart');
+        $field = new xmldb_field(
+            'assesstimefinish',
+            XMLDB_TYPE_INTEGER,
+            '10',
+            null,
+            XMLDB_NOTNULL,
+            null,
+            '0',
+            'assessedtimestart'
+        );
 
         // Conditionally launch add field assesstimefinish.
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
+
         // Define field grade to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
         $field = new xmldb_field('grade', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0', 'comments');
@@ -460,10 +487,16 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
 
         // Redefine field teacherpriorityvisibility to be added to hotquestion.
         $table = new xmldb_table('hotquestion');
-        $field = new xmldb_field('teacherpriorityvisibility',
-                                 XMLDB_TYPE_INTEGER, '2', null,
-                                 XMLDB_NOTNULL, null, '1',
-                                 'questionlabel');
+        $field = new xmldb_field(
+            'teacherpriorityvisibility',
+            XMLDB_TYPE_INTEGER,
+            '2',
+            null,
+            XMLDB_NOTNULL,
+            null,
+            '1',
+            'questionlabel'
+        );
 
         // Launch change of defaults for field teacherpriorityvisibility.
         $dbman->change_field_precision($table, $field);
@@ -581,6 +614,7 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
         if ($dbman->field_exists($table, $field)) {
             $dbman->drop_field($table, $field);
         }
+
         // Define field assessedtimestart to be dropped from hotquestion.
         $table = new xmldb_table('hotquestion');
         $field = new xmldb_field('assessedtimestart');
@@ -602,5 +636,6 @@ function xmldb_hotquestion_upgrade($oldversion=0) {
         // Hotquestion savepoint reached.
         upgrade_mod_savepoint(true, 2023012600, 'hotquestion');
     }
+
     return true;
 }
