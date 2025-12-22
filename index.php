@@ -29,7 +29,13 @@ use mod_hotquestion\event\course_module_instance_list_viewed;
 require(__DIR__ . "/../../config.php");
 require_once(__DIR__ . '/locallib.php');
 
+global $CFG;
+
 $id = required_param('id', PARAM_INT);   // Course.
+
+if ($CFG->version > 2025041400) {
+    \core_courseformat\activityoverviewbase::redirect_to_overview_page($id, 'hotquestion');
+}
 
 $course = $DB->get_record('course', ['id' => $id], '*', MUST_EXIST);
 require_course_login($course);
