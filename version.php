@@ -1,4 +1,4 @@
-<?php
+TA<?php
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -32,6 +32,6 @@ $plugin->version = 2025122100; // The current module version (Date: YYYYMMDDXX).
 $plugin->requires = 2021122100; // Requires Moodle 3.11 version.
 $plugin->cron = 60; // Period for cron to check this module (secs).
 $plugin->component = 'mod_hotquestion';
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = "4.2.5 (Build: 2025060200)"; // User-friendly version number.
+$plugin->maturity = MATURITY_BETA;
+$plugin->release = "5.0.0 (Build: 2025122100)"; // User-friendly version number.
 $plugin->supported = [311, 501];
