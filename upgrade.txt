@@ -1,11 +1,16 @@
 This files describes changes in the Hot Question code.
 
-=== 4.?.? === Items that hopefully will be in a future release.
+=== 5.0.0 === Items that hopefully will be in a future release.
+20251020 HotQuestion_1384 - HotQuestion - feature request for notifications.
+20260101 HotQuestion_1388 - HotQuestion - Issue#112 Hotquestion should support course overview.
+20260101 HotQuestion_1389 - HotQuestion - Issue#114 Fix button class for Moodle 5.0.
+20260104 HotQuestion_1390 - HotQuestion - It appears that thumbs up/down for Priority is broken.
+    Found and fixed to bits of missing code in the renderer.php file. See ticket for details.
+
 
 === 4.2.5 === 2025060200
 HotQuestion_1378 - HotQuestion - Adopting for Moodle Plugin CI. #108. Did a merge
     to make the code changes and created new release.
-
 
 === 4.2.4 === 2025041500
 20220421 HotQuestion_844 - The Moodle Mobile app is not supported.
