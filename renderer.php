@@ -454,7 +454,7 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
                         // Had to add width/height to priority and heat due to now using svg in Moodle 3.6.
                         if (has_capability('mod/hotquestion:rate', $context)) {
                             // Process priority column.
-                            $url = 'view.php?id=' . $this->hotquestion->cm->id . 'tpriority&u=1&q=' . $question->id;
+                            $url = 'view.php?id=' . $this->hotquestion->cm->id . '&action=tpriority&u=1&q=' . $question->id;
                             $tpriority .= '&nbsp;' . html_writer::link(
                                 $url,
                                 $this->pix_icon(
@@ -464,7 +464,7 @@ class mod_hotquestion_renderer extends plugin_renderer_base {
                                 ['class' => 'hotquestion_vote', 'id' => 'question_' . $question->id]
                             );
                             $tpriority .= '<br> &nbsp;';
-                            $url = 'view.php?id=' . $this->hotquestion->cm->id . 'tpriority&u=0&q=' . $question->id;
+                            $url = 'view.php?id=' . $this->hotquestion->cm->id . '&action=tpriority&u=0&q=' . $question->id;
                             $tpriority .= '&nbsp;&nbsp;' . html_writer::link(
                                 $url,
                                 $this->pix_icon(
