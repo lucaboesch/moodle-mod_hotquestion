@@ -28,11 +28,12 @@ require_once($CFG->dirroot . '/mod/hotquestion/locallib.php');
  * @package   mod_hotquestion
  * @copyright 2026
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers \mod_hotquestion::get_questions
  */
 final class locallib_test extends \advanced_testcase {
     /**
      * When grading is enabled, teacher priority must not change question ordering.
+     *
+     * @covers \mod_hotquestion::get_questions
      */
     public function test_get_questions_ignores_teacher_priority_when_grading_enabled(): void {
         [$hq, $firstid, $secondid] = $this->create_hotquestion_with_prioritized_questions(100);
@@ -46,6 +47,8 @@ final class locallib_test extends \advanced_testcase {
 
     /**
      * When grading is disabled, teacher priority continues to affect ordering.
+     *
+     * @covers \mod_hotquestion::get_questions
      */
     public function test_get_questions_keeps_teacher_priority_when_grading_disabled(): void {
         [$hq, $firstid, $secondid] = $this->create_hotquestion_with_prioritized_questions(0);
@@ -59,6 +62,8 @@ final class locallib_test extends \advanced_testcase {
 
     /**
      * Course reset must remove Hot Question comments together with questions.
+     *
+     * @covers \hotquestion_reset_userdata
      */
     public function test_hotquestion_reset_userdata_removes_question_comments(): void {
         global $DB;
@@ -122,6 +127,8 @@ final class locallib_test extends \advanced_testcase {
 
     /**
      * User question counts for limits must include only the current round.
+     *
+     * @covers \mod_hotquestion::get_user_question_count_in_current_round
      */
     public function test_get_user_question_count_in_current_round_counts_only_active_round(): void {
         global $DB;
@@ -172,6 +179,8 @@ final class locallib_test extends \advanced_testcase {
 
     /**
      * Users without posted questions must not inherit another user's grade.
+     *
+     * @covers \hotquestion_get_user_grades
      */
     public function test_hotquestion_get_user_grades_keeps_empty_users_ungraded(): void {
         global $DB;
@@ -216,6 +225,8 @@ final class locallib_test extends \advanced_testcase {
 
     /**
      * User outline should summarize question count and latest activity time.
+     *
+     * @covers \hotquestion_user_outline
      */
     public function test_hotquestion_user_outline_reports_post_summary(): void {
         global $DB;
@@ -268,13 +279,15 @@ final class locallib_test extends \advanced_testcase {
 
     /**
      * Completion pass condition must be ignored when grading is disabled.
+     *
+     * @covers \hotquestion_get_completion_state
      */
     public function test_completion_state_ignores_pass_when_grading_disabled(): void {
         global $DB;
 
         $this->resetAfterTest();
 
-        $course = $this->getDataGenerator()->create_course();
+        $course = $this->getDataGenerator()->create_course(['enablecompletion' => 1]);
         $user = $this->getDataGenerator()->create_and_enrol($course, 'student');
         $module = $this->getDataGenerator()->create_module('hotquestion', [
             'course' => $course->id,
@@ -306,11 +319,13 @@ final class locallib_test extends \advanced_testcase {
 
     /**
      * Completion description must not show passing-grade requirement when grading is disabled.
+     *
+     * @covers \mod_hotquestion_get_completion_active_rule_descriptions
      */
     public function test_completion_descriptions_hide_pass_when_grading_disabled(): void {
         $this->resetAfterTest();
 
-        $course = $this->getDataGenerator()->create_course();
+        $course = $this->getDataGenerator()->create_course(['enablecompletion' => 1]);
         $this->getDataGenerator()->create_and_enrol($course, 'student');
         $module = $this->getDataGenerator()->create_module('hotquestion', [
             'course' => $course->id,

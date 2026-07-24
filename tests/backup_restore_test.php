@@ -28,12 +28,13 @@ require_once($CFG->dirroot . '/backup/util/includes/backup_includes.php');
  * @package   mod_hotquestion
  * @copyright 2026
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers \backup_hotquestion_activity_task
- * @covers \restore_hotquestion_activity_task
  */
 final class backup_restore_test extends \restore_date_testcase {
     /**
      * Verify activity backup and restore keeps rounds, votes, and comments.
+     *
+     * @covers \backup
+     * @covers \restore
      */
     public function test_backup_restore_includes_rounds_votes_and_comments(): void {
         global $DB;
@@ -121,6 +122,9 @@ final class backup_restore_test extends \restore_date_testcase {
 
     /**
      * Verify restore keeps rounds but excludes user data when userinfo is disabled.
+     *
+     * @covers \backup
+     * @covers \restore
      */
     public function test_backup_restore_without_userinfo_keeps_rounds_only(): void {
         global $DB;

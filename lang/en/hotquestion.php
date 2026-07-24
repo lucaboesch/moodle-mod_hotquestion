@@ -25,8 +25,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['ago'] = '{$a} ago';
 $string['accessdenied'] = 'Access denied';
+$string['ago'] = '{$a} ago';
 $string['allowanonymouspost'] = 'Allow post question as anonymous';
 $string['allowanonymouspost_descr'] = 'If enabled, questions can be posted anonomously, and if approved for viewing heat votes can be made by everyone.';
 $string['allowanonymouspost_help'] = 'If enabled, questions can be posted anonomously, and if approved for viewing heat votes can be made by everyone.';
@@ -259,10 +259,10 @@ $string['time'] = 'Time';
 $string['totalcomments'] = 'Total comments';
 $string['unapprovedquestionhide'] = 'Hide unapproved questions';
 $string['unapprovedquestionnotset'] = 'Preference not set';
-$string['userquestionsummary'] = 'Posted {$a} question(s)';
 $string['unapprovedquestionsee'] = 'See unapproved questions';
 $string['unapprovedquestionvisibility'] = 'Unapproved question visibility';
 $string['userid'] = 'Userid';
+$string['userquestionsummary'] = 'Posted {$a} question(s)';
 $string['valueinterror'] = 'The factor must be a positive integer number';
 $string['viewaftertimeclose'] = 'View after close time';
 $string['viewaftertimeclose_descr'] = 'If enabled, students will be able to view, but not alter, questions and heat after close time, otherwise they will be hidden.';

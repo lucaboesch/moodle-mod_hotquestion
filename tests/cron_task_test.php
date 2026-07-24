@@ -22,11 +22,12 @@ namespace mod_hotquestion;
  * @package   mod_hotquestion
  * @copyright 2026
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @covers \\mod_hotquestion\\task\\cron_task
  */
 final class cron_task_test extends \advanced_testcase {
     /**
      * Only questions created after notifications were enabled should be selected for mailing.
+     *
+     * @covers \mod_hotquestion\task\cron_task()
      */
     public function test_get_unmailed_questions_ignores_questions_before_notifications_enabled(): void {
         global $DB;
