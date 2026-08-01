@@ -26,6 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['ago'] = '{$a} ago';
+$string['accessdenied'] = 'Access denied';
 $string['allowanonymouspost'] = 'Allow post question as anonymous';
 $string['allowanonymouspost_descr'] = 'If enabled, questions can be posted anonomously, and if approved for viewing heat votes can be made by everyone.';
 $string['allowanonymouspost_help'] = 'If enabled, questions can be posted anonomously, and if approved for viewing heat votes can be made by everyone.';
@@ -258,6 +259,7 @@ $string['time'] = 'Time';
 $string['totalcomments'] = 'Total comments';
 $string['unapprovedquestionhide'] = 'Hide unapproved questions';
 $string['unapprovedquestionnotset'] = 'Preference not set';
+$string['userquestionsummary'] = 'Posted {$a} question(s)';
 $string['unapprovedquestionsee'] = 'See unapproved questions';
 $string['unapprovedquestionvisibility'] = 'Unapproved question visibility';
 $string['userid'] = 'Userid';
