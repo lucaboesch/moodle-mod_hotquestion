@@ -46,7 +46,7 @@ ul#toolbar {
 }
 
 .dis_toolbutton {
-    color: black;
+    color: var(--mds-text-default);
 }
 
 .hotquestionattachmentpreviews {
