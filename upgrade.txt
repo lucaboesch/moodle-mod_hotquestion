@@ -41,6 +41,9 @@ This file describes changes in the Hot Question code.
 20260805 HotQuestion_1524bt - Issue #129 at github shows duplciate mobile_output_test.php.
     files.
     2026080501 Looking at code. Removed the duplicate file from mod/hotquestion/tests/.
+20260902 HotQuestion_1540 - Feature Request - Issue #130 - Need to implement modulename_summary
+    language string.
+    2026090301 Added the three needed strings.
 
 === 5.1.3+ === (Build: 2026080100)
 2026080501 HotQuestion_1494r - Issue #129 fatal class redeclaration on Moodle 5.3.

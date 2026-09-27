@@ -185,7 +185,17 @@ $string['minquestionsview'] = 'Minimum questions before viewing others';
 $string['minquestionsview_descr'] = 'Set how many questions a participant must post in the current round before they can view other participants\' questions. Set to 0 to disable this requirement.';
 $string['minquestionsview_help'] = 'If set to a value greater than 0, participants can only view their own questions until they have posted at least this number of questions in the current round.';
 $string['modulename'] = 'Hot Question';
-$string['modulename_help'] = 'A Hot Question activity enables students to post and vote on posts, in response to questions asked by course teachers.';
+$string['modulename_help'] = '###### Key features
+- Collect questions/entries from students or groups for review, feedback, and grading
+- Support individual up-votes on questions/entries
+- Support teacher priority on questions/entries
+- Allow comments on individual questions/entries
+
+###### Ways to use it
+- Collect individual feedback over time
+- Use HotQuestion activities to allow students to ask questions during live lectures or 24/7';
+$string['modulename_summary'] = 'A Hot Question activity enables students to post and vote on posts, in response to questions asked by course teachers.';
+$string['modulename_tip'] = 'Use HotQuestion activities to allow student participation 24/7.';
 $string['modulename_link'] = 'mod/hotquestion/view';
 $string['modulenameplural'] = 'Hot Questions';
 $string['newround'] = 'Open a new round';
