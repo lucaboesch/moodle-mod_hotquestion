@@ -37,7 +37,7 @@ This file describes changes in the Hot Question code.
     20231201 Started investigating how to do this. Listed in v4.2.4
         section, but without resolution details, if any.
 
-=== 5.1.4 === pending
+=== 5.1.4 === (Build: 2026100400)
 20260805 HotQuestion_1524bt - Issue #129 at github shows duplciate mobile_output_test.php.
     files.
     2026080501 Looking at code. Removed the duplicate file from mod/hotquestion/tests/.
